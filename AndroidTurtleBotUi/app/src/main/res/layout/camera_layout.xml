@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--
+ ! File:   camera_layout.xml
+ ! Author: James Kuczynski
+ ! Email: jkuczyns@cs.uml.edu
+ ! File Description: This is the layout file for the UI containing the video from the robot.
+ !
+ ! Last Modified: 9/18/2015
+ !-->
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/outer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <!-- set android:gravity (and maybe android:layout_gravity) to make webview fit -->
+
+    <ImageView
+        android:id="@+id/web_view"
+        android:src="@drawable/turtlebot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY" />
+
+</LinearLayout>

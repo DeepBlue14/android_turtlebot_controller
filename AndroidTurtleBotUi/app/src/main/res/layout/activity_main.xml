@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--
+ ! File:   activity_main.xml
+ ! Author: James Kuczynski
+ ! Email: jkuczyns@cs.uml.edu
+ ! File Description: This is the layout file for the main activity.
+ !
+ ! Last Modified: 9/18/2015
+ !-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

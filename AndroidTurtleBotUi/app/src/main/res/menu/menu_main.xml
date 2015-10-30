@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--
+ ! File:   menu_main.xml
+ ! Author: James Kuczynski
+ ! Email: jkuczyns@cs.uml.edu
+ ! File Description: This is the layout file for the menu.
+ !
+ ! Last Modified: 10/19/2015
+ !-->
+
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/map"
+        android:title="@string/map" />
+    <item
+        android:id="@+id/joystick"
+        android:title="@string/joystick" />
+    <item
+        android:id="@+id/video"
+        android:title="@string/video" />
+    <item
+        android:id="@+id/help"
+        android:title="@string/help" />
+
+</menu>

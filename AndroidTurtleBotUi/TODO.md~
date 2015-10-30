@@ -1,0 +1,13 @@
+#TODO
+
+
+
+**List of gestures**
+- click robot = select
+- swipe (robot selected) = draw path
+- swipe (robot NOT selected) = move map
+- double click (robot selected) = 
+
+- rotate two fingers clockwise/counterclockwise (robot NOT selected) = rotate map
+- = zoom out
+- = zoom in
