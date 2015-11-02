@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
+  cv_bridge
 )
 
 ## System dependencies are found with CMake's conventions
@@ -118,6 +119,7 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -189,3 +191,12 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(VideoRosToReg src/VideoRosToRegMain.cpp
+                             src/VideoRosToReg.cpp)
+target_link_libraries(VideoRosToReg ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+add_executable(VideoRegToRos src/VideoRegToRosMain.cpp
+                             src/VideoRegToRos.cpp)
+target_link_libraries(VideoRegToRos ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+

@@ -25,5 +25,5 @@
 
 </manifest>
 
-<!-- to remove the action bar at the top, use: -->
-<!--android:theme="@style/AppTheme.NoActionBar" -->
+    <!-- to remove the action bar at the top, use: -->
+    <!--android:theme="@style/AppTheme.NoActionBar" -->

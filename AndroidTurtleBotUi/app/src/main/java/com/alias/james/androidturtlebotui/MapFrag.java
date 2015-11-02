@@ -104,7 +104,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
     {
 
         System.out.println("^^^@ MapFrag::onCreateView");
-        View view = inflater.inflate(R.layout.map_layout, container, false);
+        View view = inflater.inflate(R.layout.joy_layout, container, false);
 
         Bitmap tmpBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
         mapBitmap = tmpBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -335,7 +335,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         }
 
 
-        return true;
+        return true; //FIXME this should not be hard coded: see http://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
     }
 
 

@@ -15,6 +15,9 @@ package com.alias.james.androidturtlebotui;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,7 +30,7 @@ import android.widget.ImageView;
 /**
  * Created by root on 10/29/15.
  */
-public class JoyFrag extends Fragment
+public class JoyFrag extends Fragment implements ImageView.OnTouchListener
 {
 
     private ImageView viewImageView;
@@ -39,6 +42,7 @@ public class JoyFrag extends Fragment
     private Canvas joyCanvas;
     private Button mapBtn;
     private Button videoBtn;
+    private boolean isDriving = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -54,18 +58,26 @@ public class JoyFrag extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         System.out.println("^^^@ JoyFrag::onCreateView");
-        View view = inflater.inflate(R.layout.map_layout, container, false);
+        View view = inflater.inflate(R.layout.joy_layout, container, false);
+
         viewImageView = (ImageView) view.findViewById(R.id.user_view);
         joyImageView = (ImageView) view.findViewById(R.id.joystick);
         mapBtn = (Button) view.findViewById(R.id.map_button);
         videoBtn = (Button) view.findViewById(R.id.video_button);
 
+        Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot);
+        viewImageView.setImageBitmap(tmpBitmap0);
+
         Bitmap tmpBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.compass2);
         joyBitmap = tmpBitmap.copy(Bitmap.Config.ARGB_8888, true);
         joyCanvas = new Canvas(joyBitmap);
 
+        joyImageView.setImageDrawable(new BitmapDrawable(getResources(), joyBitmap));
+        joyImageView.setBackgroundColor(Color.WHITE);
+        joyImageView.setOnTouchListener(this);
 
-        return null;
+
+        return view;
     }
 
 
@@ -87,4 +99,45 @@ public class JoyFrag extends Fragment
     {
         return "***METHOD STUB";
     }
-}
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event)
+    {
+        System.out.println("^^^JoyFrag::onTouch(...) activiated: (" + event.getX() + ", " + event.getY() + ")");
+        int action = event.getAction();
+
+        switch (action & MotionEvent.ACTION_MASK)
+        {
+            case MotionEvent.ACTION_DOWN:
+                //System.out.println("^^^paint GREEN");
+                isDriving = true;
+                joyImageView.setBackgroundColor(Color.GREEN);
+                joyImageView.invalidate(); //tells app to redraw view; also see onDraw();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                ;
+                break;
+            case MotionEvent.ACTION_UP:
+                //System.out.println("^^^paint WHITE");
+                isDriving = false;
+                joyImageView.setBackgroundColor(Color.WHITE);
+                joyImageView.invalidate(); //tells app to redraw view; also see onDraw();
+                break;
+        }
+
+        return true; //FIXME: change this return value. see http://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
+    }
+
+
+    private Point computeCompassSize()
+    {
+        Point tmpPoint = new Point(-1, -1);
+        tmpPoint.x = joyImageView.getWidth();
+        tmpPoint.y = joyImageView.getHeight();
+
+        return tmpPoint;
+    }
+
+
+
+}//end of class JoyFrag
