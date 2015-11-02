@@ -26,12 +26,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ImageView;
 
 
 public class VideoFrag extends Fragment implements WebView.OnTouchListener, TextToSpeech.OnInitListener
 {
     private TextToSpeech tts; /** Is used for speech. */
-    private WebView webView; /** Contains the video feed from the robot. */
+    private ImageView cameraView; /** Contains the video feed from the robot. */
     private float fingerPressX = 0; /** Is the x coordinate of the finger press action. */
     private float fingerPressY = 0; /** Is the y coordinate of the finger press action. */
     private float fingerReleaseX = 0; /** Is the x coordinate of the finger release action. */
@@ -72,10 +73,8 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
         this.inflater = inflater;
         //dataCom.setUiStuff(getActivity(), inflater);
         tts = new TextToSpeech(getActivity(), this);
-        webView = (WebView) view.findViewById(R.id.web_view);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setOnTouchListener(this);
+        cameraView = (ImageView) view.findViewById(R.id.web_view);
+        cameraView.setOnTouchListener(this);
 
         startWebCamStream();
 
@@ -182,8 +181,10 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void speakOut()
     {
+        /*
         String text = "Testing";
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        */
     }
 
 
@@ -192,7 +193,7 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
      */
     public void startWebCamStream()
     {
-        webView.loadUrl(UniversalDat.getCamUrlStr());
+        ;//webView.loadUrl(UniversalDat.getCamUrlStr());
     }
 
 
@@ -201,7 +202,7 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
      */
     public void stopWebCamStream()
     {
-        webView.stopLoading();
+        ;//webView.stopLoading();
     }
 
 
@@ -246,25 +247,25 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
 
     /**
      * Mutator.
-     * @see #webView
+     * @see #cameraView
      *
-     * @param webView
+     * @param cameraView
      */
-    public void setWebView(WebView webView)
+    public void setWebView(ImageView cameraView)
     {
-        this.webView = webView;
+        this.cameraView = cameraView;
     }
 
 
     /**
      * Accessor.
-     * @see #webView
+     * @see #cameraView
      *
      * @return
      */
-    public WebView getWebView()
+    public ImageView getWebView()
     {
-        return webView;
+        return cameraView;
     }
 
 

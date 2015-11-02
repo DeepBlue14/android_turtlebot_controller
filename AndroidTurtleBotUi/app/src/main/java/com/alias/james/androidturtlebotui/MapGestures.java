@@ -2,7 +2,7 @@
  * File:   MapGestures.java
  * Author: James Kuczynski
  * Email: jkuczyns@cs.uml.edu
- * File Description: This class handles gestures, i.e. evaluating them ...
+ * File Description: This helper class contains the logic of the gestures.
  *
  * Last Modified 10/22/2015
  */
@@ -21,7 +21,9 @@ public class MapGestures {
         ROTATE_CLOCKWISE,
         ROTATE_COUNTERCLOCKWISE,
         SELECT_ROBOT,
-        DESELECT_ROBOT
+        DESELECT_ROBOT,
+        DRAW_FOOTPRINT,
+        COMPLETE_PATH
     }
 
     public MapGestures() {

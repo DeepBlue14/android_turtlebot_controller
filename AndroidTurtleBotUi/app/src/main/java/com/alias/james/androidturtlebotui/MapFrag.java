@@ -110,7 +110,6 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         mapBitmap = tmpBitmap.copy(Bitmap.Config.ARGB_8888, true);
         mapWidth = mapBitmap.getWidth();
         mapHeight = mapBitmap.getHeight();
-
         mapCanvas = new Canvas(mapBitmap);
 
         paint = new Paint();
@@ -123,7 +122,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, 60, 60, true);
         robotWidth = turtlebotBitmap.getWidth();
         robotHeight = turtlebotBitmap.getHeight();
-        paint.setColor(Color.RED);
+        paint.setColor(Color.YELLOW);
         mapCanvas.drawBitmap(turtlebotBitmap, 240, 360, paint);
 
         imageView = (ImageView) view.findViewById(R.id.map_image);
@@ -131,6 +130,8 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         imageView.setImageDrawable(new BitmapDrawable(getResources(), mapBitmap));
         imageView.setOnTouchListener(this);
 
+        //System.out.println("^^^width x height: " + mapBitmap.getWidth() + ", " + mapBitmap.getHeight());
+        //System.out.println("^^^width x height: " + turtlebotBitmap.getWidth() + ", " + turtlebotBitmap.getHeight());// = 60, 60
 
         return view;
     }
@@ -154,26 +155,49 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         {
             case MotionEvent.ACTION_DOWN:
 
-                if (!isRobotSelected && event.getPointerCount() == 1 && (event.getX()+120) < (robotXPos + 90) && (event.getX()+120) > (robotXPos - 90)
-                        && (event.getY()-100) < (robotYPos + 90) && (event.getY()-100) > (robotYPos - 90) )
+                if (!isRobotSelected && event.getPointerCount() == 1 && (event.getX()+120) < (robotXPos + 60) && (event.getX()+120) > (robotXPos - 60)
+                        && (event.getY()-100) < (robotYPos + 60) && (event.getY()-100) > (robotYPos - 60) )
                 {
                     isRobotSelected = true;
                     updateView();
                 }
-                else if (isRobotSelected && event.getPointerCount() == 1 && (event.getX()+120) < (robotXPos + 90) && (event.getX()+120) > (robotXPos - 90)
-                        && (event.getY()-100) < (robotYPos + 90) && (event.getY()-100) > (robotYPos - 90) )
+                else if (isRobotSelected && event.getPointerCount() == 1 && (event.getX()+120) < (robotXPos + 60) && (event.getX()+120) > (robotXPos - 60)
+                        && (event.getY()-100) < (robotYPos + 60) && (event.getY()-100) > (robotYPos - 60) )
                 {
                     isRobotSelected = false;
                     updateView();
                 }
-                else if (isRobotSelected && event.getPointerCount() == 1 && ( !((event.getX()+120) < (robotXPos + 90)) || !((event.getX()+120) > (robotXPos - 90))
-                        || !((event.getY()-100) < (robotYPos + 90)) || !((event.getY()-100) > (robotYPos - 90)) ) )
+                else if (isRobotSelected && event.getPointerCount() == 1 && ( !((event.getX()+120) < (robotXPos + 60)) || !((event.getX()+120) > (robotXPos - 60))
+                        || !((event.getY()-100) < (robotYPos + 60)) || !((event.getY()-100) > (robotYPos - 60)) ) )
                 {
-                    System.out.println("^^^drawing circle");
-                    //mapCanvas.drawCircle(event.getX() + 120, event.getY() - 60, 5, paint);//offset of bitmap vs imageview
-                    //imageView.invalidate();
-                    footPrintArrLst.add(new Point((int) event.getX() + 120, (int)event.getY()-60) );
-                    updateView();
+                    //if the list is empty, then it cannot be a double click
+                    if(!footPrintArrLst.isEmpty() )
+                    {
+                        //check for double click
+                        if ( ((event.getX()+120) < (footPrintArrLst.get(footPrintArrLst.size()-1).x+70) && (event.getY()-60) < (footPrintArrLst.get(footPrintArrLst.size()-1).y+70)) &&
+                             ((event.getX()+120) > (footPrintArrLst.get(footPrintArrLst.size()-1).x-70) && (event.getY()-60) > (footPrintArrLst.get(footPrintArrLst.size()-1).y-70)) &&
+                             ((event.getX()+120) < (footPrintArrLst.get(footPrintArrLst.size()-1).x+70) && (event.getY()-60) > (footPrintArrLst.get(footPrintArrLst.size()-1).y-70)) &&
+                             ((event.getX()+120) > (footPrintArrLst.get(footPrintArrLst.size()-1).x-70) && (event.getY()-60) < (footPrintArrLst.get(footPrintArrLst.size()-1).y+70)) )
+                        {
+                            System.out.println("^^^Advance, my robot hoard!");
+                            //path is complete; signal the robot to start following it.
+                            footPrintArrLst.clear();
+                        }
+                        else
+                        {
+                            System.out.println("^^^Add footstep");
+                            footPrintArrLst.add(new Point((int) event.getX() + 120, (int) event.getY() - 60));
+                            updateView();
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("^^^First footstep");
+                        footPrintArrLst.add(new Point((int) event.getX() + 120, (int)event.getY()-60) );
+                        updateView();
+                    }
+
+
                 }
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -219,15 +243,15 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
                     {
                         //System.out.println("dx: " + dx1 + " dy: " + dy1);
 
+                        //zoom out
                         //the finger on right goes right; finger on left goes left
                         if ( (fingerPressX1 > fingerPressX0 && dx1 >= 0 && dx0 <= 0) ||
                                 (fingerPressX0 > fingerPressX1 && dx0 >= 0 && dx1 <= 0) ||
                                 (fingerPressY1 > fingerPressY0 && dy1 >= 0 && dy0 <= 0) ||
                                 (fingerPressY0 > fingerPressY1 && dy0 >= 0 && dy1 <= 0) )
                         {
-
                             mapCanvas.drawColor(Color.BLACK);
-                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth()+10, mapBitmap.getHeight()+10, false);
+                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth()+(mapBitmap.getWidth()/100), mapBitmap.getHeight()+(mapBitmap.getHeight()/100), false);
                             turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, turtlebotBitmap.getWidth()+1, turtlebotBitmap.getHeight()+1, false);
                             mapWidth = mapBitmap.getWidth();
                             mapHeight = mapBitmap.getHeight();
@@ -236,6 +260,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
                             imageView.invalidate(); //tells app to redraw view; also see onDraw();
 
                         }
+                        //zoom in
                         else if ( (fingerPressX1 > fingerPressX0 && dx1 >= 0 && dx0 >= 0) ||
                                 (fingerPressX0 > fingerPressX1 && dx0 <= 0 && dx1 >= 0) ||
                                 (fingerPressY1 > fingerPressY0 && dy1 <= 0 && dy0 >= 0) ||
@@ -243,7 +268,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
                         {
 
                             mapCanvas.drawColor(Color.BLACK);
-                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth()-10, mapBitmap.getHeight()-10, false);
+                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth()-(mapBitmap.getWidth()/100), mapBitmap.getHeight()-(mapBitmap.getHeight()/100), false);
                             turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, turtlebotBitmap.getWidth()-1, turtlebotBitmap.getHeight()-1, false);
                             mapWidth = mapBitmap.getWidth();
                             mapHeight = mapBitmap.getHeight();
@@ -282,13 +307,16 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
                     float dy = (event.getY(0) - fingerPressY1);
                     distanceSum += Math.sqrt(dx * dx + dy * dy);
 
-                    if (dx < 100 && dy < 100 )
-                    {
+                    if (dx < 100 && dy < 100 ) {
                         mapCanvas.drawColor(Color.BLACK);
                         mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
                         mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapWidth, mapHeight, false);
                         mapCanvas.drawBitmap(mapBitmap, (mapXPos += dx), (mapYPos += dy), paint);
                         mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += dx), (robotYPos += dy), paint);
+                        for(int i = 0; i < footPrintArrLst.size(); i++)
+                        {
+                            mapCanvas.drawCircle(footPrintArrLst.get(i).x, footPrintArrLst.get(i).y, 5, paint);
+                        }
                         //mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += 10), robotYPos, paint);
                         imageView.invalidate(); //tells app to redraw view; also see onDraw();
                         //mapCanvas.drawCircle(event.getX()+(dx*10), event.getY()+(dy*5), 2, paint);

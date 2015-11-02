@@ -5,7 +5,7 @@
 
     <ImageView
         android:id="@+id/user_view"
-        android:src="@drawable/turtlebot"
+        android:src="@drawable/test_world"
         android:scaleType="fitXY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
 
     <ImageView
         android:id="@+id/joystick"
-        android:src="@drawable/turtlebot"
+        android:src="@drawable/compass2"
         android:scaleType="fitXY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

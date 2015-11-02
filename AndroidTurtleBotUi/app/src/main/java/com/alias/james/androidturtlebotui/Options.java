@@ -23,4 +23,11 @@ public interface Options {
      * @param position
      */
     public void onImgSelected(int position);
+
+    /**
+     * Method prototype for callback.
+     *
+     * @param position
+     */
+    public void onJoySelected(int position);
 }

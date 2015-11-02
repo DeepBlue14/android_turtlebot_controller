@@ -13,6 +13,7 @@
 package com.alias.james.androidturtlebotui;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -59,6 +60,9 @@ public class JoyFrag extends Fragment
         mapBtn = (Button) view.findViewById(R.id.map_button);
         videoBtn = (Button) view.findViewById(R.id.video_button);
 
+        Bitmap tmpBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.compass2);
+        joyBitmap = tmpBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        joyCanvas = new Canvas(joyBitmap);
 
 
         return null;

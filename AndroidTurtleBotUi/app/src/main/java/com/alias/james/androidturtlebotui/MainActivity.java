@@ -20,9 +20,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
-public class MainActivity extends FragmentActivity implements Options {
+public class MainActivity extends FragmentActivity implements Options
+{
 
-    private MapFrag m_mapFrag = new MapFrag();
+    private MapFrag mapFrag = new MapFrag();
+    private JoyFrag joyFrag = new JoyFrag();
     private Menu m_menu;
 
     /**
@@ -31,11 +33,13 @@ public class MainActivity extends FragmentActivity implements Options {
      * @param savedInstanceState
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, m_mapFrag).commit();
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mapFrag).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
     }
 
 
@@ -46,7 +50,8 @@ public class MainActivity extends FragmentActivity implements Options {
      * @return
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -63,13 +68,20 @@ public class MainActivity extends FragmentActivity implements Options {
      * @return
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId() ) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId() )
+        {
             case R.id.map:
                 System.out.println("\"Map\" selected");
                 return true;
+            case R.id.joystick:
+                System.out.println("\"Joystick\" selected");
+                onJoySelected(0);
+                break;
             case R.id.video:
                 System.out.println("\"Video\" selected");
+                onImgSelected(0);
                 return true;
             case R.id.help:
                 System.out.println("\"Help\" selected");
@@ -77,6 +89,7 @@ public class MainActivity extends FragmentActivity implements Options {
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return false;//FIXME: hardcoded return statement stub.
     }
 
 
@@ -88,8 +101,9 @@ public class MainActivity extends FragmentActivity implements Options {
     @Override
     public void onImgSelected(int position)
     {
-        System.out.println("swapping");
+        System.out.println("^^^swapping; postion: " + position);
         VideoFrag secondFrag = new VideoFrag();
+
 
         secondFrag.setArguments(getIntent().getExtras());
 
@@ -102,13 +116,20 @@ public class MainActivity extends FragmentActivity implements Options {
     }
 
 
-    /*public void computeDisplaySize() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-    }*/
+    @Override
+    public void onJoySelected(int position)
+    {
+        System.out.print("^^^swapping; position: " + position);
+        JoyFrag thirdFrag = new JoyFrag();
+
+        thirdFrag.setArguments(getIntent().getExtras());
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.fragment_container, thirdFrag);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
 
     public String toString()
