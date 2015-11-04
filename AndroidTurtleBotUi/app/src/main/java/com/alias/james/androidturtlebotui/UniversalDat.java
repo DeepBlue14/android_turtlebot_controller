@@ -25,7 +25,7 @@ public class UniversalDat
      * IP address of the robot (initialized to James' lab machine--internal network.
      * Alternate: 129.63.17.97 (James' lab machine--external network)
      */
-    private static String ipAddressStr = "10.0.4.6";
+    private static String ipAddressStr = "10.0.4.6";//TODO: change this for IP of robot brain 2
     private static String leftCamTopicStr = "/camera/rgb/image_raw"; /** !!!TEMP!!! ROS topic the left camera will publish to. */
     //private static String leftCamTopicStr = "/camera1/rgb/image_raw"; /** ROS topic the left camera will publish to. */
     private static String rightCamTopicStr = "/camera2/rgb/image_raw"; /** ROS topic the right camera will publish to. */
