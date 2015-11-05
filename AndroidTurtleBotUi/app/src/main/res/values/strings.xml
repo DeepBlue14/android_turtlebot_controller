@@ -5,4 +5,11 @@
     <string name="joystick">Joystick</string>
     <string name="video">Video</string>
     <string name="help">Help</string>
+    <string name="ip_address">IP Address</string>
+    <string name="port_1">Video Port</string>
+    <string name="port_2">Port 2</string>
+    <string name="port_3">Port 3</string>
+    <string name="update">Update</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>

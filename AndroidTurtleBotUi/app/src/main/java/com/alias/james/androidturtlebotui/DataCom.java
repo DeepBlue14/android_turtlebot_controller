@@ -147,7 +147,7 @@ public class DataCom
 
             try {
                 serverAddress = InetAddress.getByName(UniversalDat.getIpAddressStr() );
-                socket = new Socket(serverAddress, UniversalDat.getDatacomPort() ); //!!!connect in a separate method--same goes for FetchLRFrames!!!
+                socket = new Socket(serverAddress, UniversalDat.getVideoPort() ); //!!!connect in a separate method--same goes for FetchLRFrames!!!
                 System.out.println("^^^Successfully connected to server^^^");
             } catch (UnknownHostException e) {
                 e.printStackTrace();

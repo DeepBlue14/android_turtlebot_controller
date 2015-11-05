@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -27,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import org.opencv.core.Mat;
 
 /**
  * Created by root on 10/29/15.
@@ -47,6 +50,9 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
     private Button videoBtn;
     private boolean isDriving = false;
     private boolean dreamIsOn = true; /** Use modified DREAM version instead of static placement. */
+    private boolean camNotMap = false; /** Display video feed, rather then map view */
+    private float compassX;
+    private float compassY;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,8 +76,24 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
         mapBtn = (Button) view.findViewById(R.id.map_button);
         videoBtn = (Button) view.findViewById(R.id.video_button);
 
-        Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot);
-        viewImageView.setImageBitmap(tmpBitmap0);
+        if(camNotMap)
+        {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(0);
+            Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.cv_image);
+            tmpBitmap0 = Bitmap.createBitmap(tmpBitmap0, 200, 200, 480, 640, matrix, true);
+            viewImageView.setImageBitmap(tmpBitmap0);
+        }
+        else
+        {
+            //load part of the map where robot is at currently
+            Matrix matrix = new Matrix();
+            matrix.postRotate(0);
+            Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
+            tmpBitmap0 = Bitmap.createBitmap(tmpBitmap0, 200, 200, 480, 640, matrix, true);
+            viewImageView.setImageBitmap(tmpBitmap0);
+        }
+
 
         Bitmap tmpBitmap1;
         if(dreamIsOn)
@@ -133,19 +155,48 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
 
                 if(dreamIsOn)
                 {
-                    joyCanvas.drawColor(Color.GREEN);
-                    joyImageView.setBackgroundColor(Color.GREEN);
-                    joyCanvas.drawBitmap(compassBitmap, event.getX() - compassBitmap.getWidth() / 4, event.getY() - compassBitmap.getHeight() / 4, paint);
+                    joyCanvas.drawColor(Color.RED);
+                    joyImageView.setBackgroundColor(Color.RED);
+
+                    //http://stackoverflow.com/questions/6038867/android-how-to-detect-touch-location-on-imageview-if-the-image-view-is-scaled-b
+                    //TODO: see http://stackoverflow.com/questions/4933612/how-to-convert-coordinates-of-the-image-view-to-the-coordinates-of-the-bitmap
+                    // for scalling factor.
+                    Matrix inverse = new Matrix();
+                    joyImageView.getImageMatrix().invert(inverse);
+                    float[] touchPoint = new float[] {event.getX(), event.getY()};
+                    inverse.mapPoints(touchPoint);
+
+                    joyCanvas.drawBitmap(compassBitmap, Math.round(touchPoint[0]) - (compassBitmap.getWidth()/2), Math.round(touchPoint[1]) - (compassBitmap.getHeight()/2), paint);
+                    compassX = event.getX();
+                    compassY = event.getY();
                 }
                 else
                 {
-                    joyImageView.setBackgroundColor(Color.GREEN);
+                    joyImageView.setBackgroundColor(Color.RED);
                 }
 
                 joyImageView.invalidate(); //tells app to redraw view; also see onDraw();
                 break;
             case MotionEvent.ACTION_MOVE:
-                ;
+                /*
+                if(event.getX() > ((compassX - compassBitmap.getWidth() / 4)+200) ||
+                   event.getX() < ((compassX - compassBitmap.getWidth() / 4)-200) ||
+                   event.getY() > ((compassY - compassBitmap.getHeight() / 4)+200) ||
+                   event.getY() < ((compassY - compassBitmap.getHeight() / 4)-200))
+                {
+                    joyCanvas.drawColor(Color.GREEN);
+                    joyImageView.setBackgroundColor(Color.GREEN);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth()/2), compassY - (compassBitmap.getHeight()/2), paint);
+                    joyImageView.invalidate();
+                }
+                else
+                {
+                    joyCanvas.drawColor(Color.RED);
+                    joyImageView.setBackgroundColor(Color.RED);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth()/2), compassY - (compassBitmap.getHeight()/2), paint);
+                    joyImageView.invalidate();
+                }
+                */
                 break;
             case MotionEvent.ACTION_UP:
                 //System.out.println("^^^paint WHITE");
@@ -155,7 +206,6 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                 {
                     joyCanvas.drawColor(Color.WHITE);
                     joyBitmap = Bitmap.createScaledBitmap(joyBitmap, joyBitmap.getWidth()-(joyBitmap.getWidth()/100), joyBitmap.getHeight()-(joyBitmap.getHeight()/100), false);
-                    compassBitmap = Bitmap.createScaledBitmap(compassBitmap, compassBitmap.getWidth() - 1, compassBitmap.getHeight() - 1, false);
                     joyCanvas.drawBitmap(joyBitmap, 0, 0, paint);
                     joyImageView.setBackgroundColor(Color.WHITE);
                 }

@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<!--
- ! File:   camera_layout.xml
- ! Author: James Kuczynski
- ! Email: jkuczyns@cs.uml.edu
- ! File Description: This is the layout file for the UI containing the video from the robot.
- !
- ! Last Modified: 9/18/2015
- !-->
-
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"

@@ -71,10 +71,13 @@ void VideoRegToRos::subscribe(int spinRate)
                 img.at<Vec3b>(Point(x, y))[2] = color.val[0];
             }
         }
+        //cv::imwrite("/home/james/Documents/cv_image.jpg", img);
+        //exit(0);
         cv::imshow("Client", img);
         cv::waitKey(3);
         //-----end TESTING-----
-        
+       
+
         cv_ptr.image = img;
         pub->publish(cv_ptr.toImageMsg() );
     }

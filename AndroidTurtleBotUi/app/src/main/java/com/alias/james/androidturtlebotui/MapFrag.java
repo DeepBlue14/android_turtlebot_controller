@@ -86,7 +86,6 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-
         computeDisplaySize();
         super.onCreate(savedInstanceState);
     }
@@ -104,7 +103,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
     {
 
         System.out.println("^^^@ MapFrag::onCreateView");
-        View view = inflater.inflate(R.layout.joy_layout, container, false);
+        View view = inflater.inflate(R.layout.map_layout, container, false);
 
         Bitmap tmpBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
         mapBitmap = tmpBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -113,10 +112,6 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         mapCanvas = new Canvas(mapBitmap);
 
         paint = new Paint();
-
-        //mapCanvas.drawCircle(200, 350, 10, paint);
-        //mapCanvas.drawCircle(200, 600, 10, paint);
-        //mapCanvas.drawCircle(500, 200, 10, paint);
 
         turtlebotBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot);
         turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, 60, 60, true);

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.alias.james.umlcommander"
+        applicationId "com.alias.james.androidturtlebotui"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1

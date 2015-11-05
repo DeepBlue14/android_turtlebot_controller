@@ -25,7 +25,9 @@ public class MainActivity extends FragmentActivity implements Options
 
     private MapFrag mapFrag = new MapFrag();
     private JoyFrag joyFrag = new JoyFrag();
-    private Menu m_menu;
+    private Menu menu;
+    private NetworkConfig networkConfig = new NetworkConfig(); /** Is a reference to the class which handles the administrator networking options. */
+    private Login login = new Login(); /** Contains the login dialog required if a user wishes to gain administrator privileges. */
 
     /**
      * Sets up the fragment manager and main layout.
@@ -55,7 +57,7 @@ public class MainActivity extends FragmentActivity implements Options
         // Inflate the menu; this adds items to the action bar if it is present.
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        m_menu = menu;
+        this.menu = menu;
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -78,10 +80,27 @@ public class MainActivity extends FragmentActivity implements Options
             case R.id.joystick:
                 System.out.println("\"Joystick\" selected");
                 onJoySelected(0);
-                break;
+                break; //FIXME: should this be "return true"?
             case R.id.video:
                 System.out.println("\"Video\" selected");
                 onImgSelected(0);
+                return true;
+            case R.id.speech_input:
+                System.out.println("\"Speech Input\" selected");
+                return true;
+            case R.id.speech_output:
+                System.out.println("\"Speech Output\" selected");
+                return true;
+            case R.id.network:
+                System.out.println("\"Network\" selected");
+                networkConfig.initNetworkConfigDialog(this, getLayoutInflater() ); //!!!this should really happen on create!!!
+                networkConfig.getNetworkDialog().show();
+                return true;
+            case R.id.admin:
+                System.out.println("\"Administrator\" selected");
+                login.initLoginDialog(this, getLayoutInflater());
+                login.show(menu.getItem(4));
+                System.out.println("checking for admin status");
                 return true;
             case R.id.help:
                 System.out.println("\"Help\" selected");
