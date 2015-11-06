@@ -5,14 +5,12 @@
 
     <ImageView
         android:id="@+id/user_view"
-        android:src="@drawable/test_world"
-        android:scaleType="fitXY"
+        android:scaleType="centerInside"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_weight="1"
         android:background="#fff"
-        android:paddingBottom="20dp"
         />
 
     <LinearLayout
@@ -26,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:layout_weight="1"
             android:text="@string/map" />
 
@@ -35,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:layout_weight="1"
             android:text="@string/video" />
 
@@ -44,7 +42,7 @@
     <ImageView
         android:id="@+id/joystick"
         android:src="@drawable/compass2"
-        android:scaleType="fitXY"
+        android:scaleType="centerInside"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"

@@ -9,6 +9,7 @@
 
 package com.alias.james.androidturtlebotui;
 
+import android.app.AlertDialog;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 public class MainActivity extends FragmentActivity implements Options
@@ -28,6 +30,8 @@ public class MainActivity extends FragmentActivity implements Options
     private Menu menu;
     private NetworkConfig networkConfig = new NetworkConfig(); /** Is a reference to the class which handles the administrator networking options. */
     private Login login = new Login(); /** Contains the login dialog required if a user wishes to gain administrator privileges. */
+    private MenuItem speechInCb;
+    private MenuItem speechOutCb;
 
     /**
      * Sets up the fragment manager and main layout.
@@ -40,8 +44,8 @@ public class MainActivity extends FragmentActivity implements Options
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mapFrag).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mapFrag).commit();
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
     }
 
 
@@ -87,19 +91,44 @@ public class MainActivity extends FragmentActivity implements Options
                 return true;
             case R.id.speech_input:
                 System.out.println("\"Speech Input\" selected");
+                speechInCb = menu.getItem(3);
+                if(speechInCb.isChecked())
+                {
+                    speechInCb.setChecked(false);
+                }
+                else
+                {
+                    speechInCb.setChecked(true);
+                }
                 return true;
             case R.id.speech_output:
                 System.out.println("\"Speech Output\" selected");
+                speechOutCb = menu.getItem(4);
+                if(speechOutCb.isChecked())
+                {
+                    speechOutCb.setChecked(false);
+                }
+                else
+                {
+                    speechOutCb.setChecked(true);
+                }
                 return true;
             case R.id.network:
                 System.out.println("\"Network\" selected");
-                networkConfig.initNetworkConfigDialog(this, getLayoutInflater() ); //!!!this should really happen on create!!!
-                networkConfig.getNetworkDialog().show();
+                if(Login.getUserIsAdmin())
+                {
+                    networkConfig.initNetworkConfigDialog(this, getLayoutInflater() ); //!!!this should really happen on create!!!
+                    networkConfig.getNetworkDialog().show();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "You must be admin to perform this action", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.admin:
                 System.out.println("\"Administrator\" selected");
                 login.initLoginDialog(this, getLayoutInflater());
-                login.show(menu.getItem(4));
+                login.show(menu.getItem(6));
                 System.out.println("checking for admin status");
                 return true;
             case R.id.help:

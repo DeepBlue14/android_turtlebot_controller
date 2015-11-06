@@ -25,7 +25,7 @@ public class UniversalDat
     private static int positionOutPort = 50001; /** The port which DataCom will use to send
                                                     coordinates to the robot. */
     private static int positionInPort = 50002; /** The position DataCom will use to receive
-                                                      current coordinates from the robot. */
+                                                   current coordinates from the robot. */
 
 
 

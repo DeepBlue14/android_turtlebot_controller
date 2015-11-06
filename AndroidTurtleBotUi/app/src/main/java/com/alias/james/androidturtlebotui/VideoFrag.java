@@ -15,8 +15,10 @@
 package com.alias.james.androidturtlebotui;
 
 import android.annotation.TargetApi;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,6 +30,16 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 
 public class VideoFrag extends Fragment implements WebView.OnTouchListener, TextToSpeech.OnInitListener
 {
@@ -37,9 +49,12 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
     private float fingerPressY = 0; /** Is the y coordinate of the finger press action. */
     private float fingerReleaseX = 0; /** Is the x coordinate of the finger release action. */
     private float fingerReleaseY = 0; /** Is the y coordinate of the finger release action. */
+    private Socket socket; /** Socket object to handle traffic between robot and Android device. */
+    private InetAddress serverAddress = null; /** The address of the robot. */
+    private final int MATRIX_SIZE = 921600; /** OpenCV matrixes  retrieved from the PrimeSense via ROS are always this size */
+    private Bitmap camBitmap; /** Is the bitmap with bounding box drawn around the object the robot thinks the user selected. */
 
     LayoutInflater inflater; /** Is an inflater object to inflate the VerifyTouch dialog UI. */
-    DataCom dataCom; /** Is used to handle transactions between the robot and Android device after an point has been initially selected. */
 
 
     /**
@@ -51,8 +66,6 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        dataCom = new DataCom();
-
     }
 
 
@@ -193,7 +206,87 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
      */
     public void startWebCamStream()
     {
-        ;//webView.loadUrl(UniversalDat.getCamUrlStr());
+
+        /*
+        //http://stackoverflow.com/questions/12716850/android-update-textview-in-thread-and-runnable
+        final Handler handler = new Handler();
+        //Runnable runnable = new Runnable() {
+        Thread runnable = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    serverAddress = InetAddress.getByName(UniversalDat.getIpAddressStr());
+                    socket = new Socket(serverAddress, UniversalDat.getVideoPort() ); //!!!connect in a separate method--same goes for FetchLRFrames!!!
+                    System.out.println("^^^Successfully connected to server^^^");
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                while (true)
+                {
+                    try
+                    {
+                        Thread.sleep(1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    handler.post(new Runnable() {
+                        public void run()
+                        {
+                            try
+                            {
+                                InputStream sub = socket.getInputStream(); // ???Do this once???
+                                System.out.println("^^^Generating new InputStream obj");
+                                // !!!???will this be true 32 & 64 bit processors???!!!
+                                byte[] buffer = new byte[MATRIX_SIZE];
+                                int currPos = 0;
+                                int bytesRead = 0;
+
+                                //bytesRead = sub.read(buffer, 0, buffer.length);
+                                //currPos = bytesRead;
+                                do
+                                {
+                                    bytesRead = sub.read(buffer, currPos, (buffer.length - currPos));
+
+                                    if (bytesRead != -1 && bytesRead != 0)
+                                    {
+                                        currPos += bytesRead;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+
+                                } while (bytesRead != -1 && bytesRead != 0);
+
+                                System.out.println("^^^recieved image bytes @ DataCom::doInBackground(...):" + currPos);
+                                Mat mat = new Mat(480, 640, CvType.CV_8UC3);
+                                mat.put(0, 0, buffer);
+                                camBitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
+                                Utils.matToBitmap(mat, camBitmap);
+                            } catch (UnknownHostException e) {
+                                System.out.println("^^^Ousted");
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                System.out.println("^^^Ousted");
+                                e.printStackTrace();
+                            }
+
+                            //update ui
+                            //cameraView.setImageBitmap(camBitmap);
+
+
+                        }
+                    });
+                }
+            }
+        });
+        runnable.start();
+        */
     }
 
 
@@ -386,30 +479,6 @@ public class VideoFrag extends Fragment implements WebView.OnTouchListener, Text
     public LayoutInflater getInflater()
     {
         return inflater;
-    }
-
-
-    /**
-     * Mutator.
-     * @see #dataCom
-     *
-     * @param dataCom
-     */
-    public void setDataCom(DataCom dataCom)
-    {
-        this.dataCom = dataCom;
-    }
-
-
-    /**
-     * Accessor.
-     * @see #dataCom
-     *
-     * @return
-     */
-    public DataCom getDataCom()
-    {
-        return dataCom;
     }
 
 
