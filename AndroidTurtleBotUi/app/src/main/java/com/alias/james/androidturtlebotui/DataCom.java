@@ -3,8 +3,9 @@
  * Author: James Kuczynski
  * Email: jkuczyns@cs.uml.edu
  * File Description: This class handles data communication between the app and the robot.  It
- *                   sends commands to the robot, and receives updates as to the robots current
- *                   position.
+ *                   SENDS commands to the robot (paths--i.e. an array of points if in map mode,
+ *                   and a direction if in teleop mode, and RECEIVES updates as to the robots
+ *                   current position.
  *
  * Commands:
  *      - A list of values representing a path between the current position and the final location.

@@ -1,5 +1,5 @@
 /*
- * File:   VideoRegToRos.h
+ * File:   RosClientWs.h
  * Author: James Kuczynski
  * Email: jkuczyns@cs.uml.edu
  * File Description: This program converts OpenCV matrix to sensor_msgs::Image,
@@ -12,17 +12,17 @@
  *                   Python, and MATLAB/OCTAVE, as well as partial
  *                   functionality for C#, Perl, Ruby, and Ch.
  *
- * Created July 6, 2015 at 10:30
+ * Created September 17, 2015 at 6:00pm
  */
 
 
-#ifndef ROS_CLIENT_H
-#define ROS_CLIENT_H
+#ifndef ROS_CLIENT_WS_H
+#define ROS_CLIENT_WS_H
 
 #include <ros/ros.h>
 #include <ros/console.h>
 
-#include <sensor_msgs/Image.h>
+#include <std_msgs/String.h>
 
 #include <opencv/cv.h>
 #include <image_transport/image_transport.h>
@@ -33,6 +33,10 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include <boost/thread.hpp>
+
+#include <QObject>
+#include <QWebSocket>
+#include <QCoreApplication>
 
 #include <math.h>
 #include <stdlib.h>
@@ -55,27 +59,35 @@ using namespace cv;
 using namespace std;
 using namespace RosIpT;
 
-class RosIpT::VideoRegToRos
+class RosIpT::RosClientWs : public QObject
 {   
+    Q_OBJECT
+    
     private:
+        QWebSocket webSocket;
+        QUrl* urlPtr;
         Publisher* pub;
-        int sokt;
-        string serverIPStr;
-        char* serverIP;
-        int serverPort;
-        struct sockaddr_in serverAddr;
-        socklen_t addrLen;
+         QCoreApplication* appPtr;
+    
         
+    signals:
+        void signalClosed();
+        
+        
+    private slots:
+        void handleConnectRequest();
+        void handleRecv(QString message);
+    
+    
     public:
-        VideoRegToRos();
-        bool connect2Server(string address = "127.0.0.1", int port = 50000);
-        void spinTcp(int spinRate = 100);
-        void subscribe(int spinRate);
-        void closeConnection();
+        RosClientWs(const QUrl& url, QObject* parent = 0);
+        void connect2Server(RosClientWs* client, QCoreApplication* app);
+        void spinWs();
         Publisher* getPublisher();
-        ~VideoRegToRos();
+        ~RosClientWs();
+
 
 };
 
 
-#endif /* ROS_CLIENT_H */
+#endif /* ROS_CLIENT_WS_H */

@@ -2,6 +2,9 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
+        android:id="@+id/speech_input"
+        android:title="Speech Input" />
+    <item
         android:id="@+id/map"
         android:title="@string/map" />
     <item
@@ -10,10 +13,6 @@
     <item
         android:id="@+id/video"
         android:title="@string/video" />
-    <item
-        android:id="@+id/speech_input"
-        android:checkable="true"
-        android:title="Speech Input" />
     <item
         android:id="@+id/speech_output"
         android:checkable="true"

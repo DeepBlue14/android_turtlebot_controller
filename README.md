@@ -13,6 +13,7 @@
 ###**Index**
 
 - [Project Synopsis](#project-synopsis)
+- [Introduction](#introduction)
 - [Dependencies](#dependencies)
 - [Install](#install)
 - [Future Work](#future-work)
@@ -23,6 +24,11 @@
 This package provides a UI to control a mobile robot with a Android tablet or smartphone.  This particular project uses a TurtleBot (gen. 1 with a Create base).  The backend consists of the programs which the robot must run to communicate with the Android device.
 
 *WARNING*: This project is currently in the pre-alpha stage.*
+
+
+###**Introduction**
+
+*TBA...*
 
 
 ###**Dependencies**

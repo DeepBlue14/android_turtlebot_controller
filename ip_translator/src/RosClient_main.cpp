@@ -1,5 +1,5 @@
 /*
- * File:   VideoRegToRos_main.cpp
+ * File:   RosClient_main.cpp
  * Author: James Kuczynski
  * Email: jkuczyns@cs.uml.edu
  * File Description: This is a example of how ros_ip_transform can be used
@@ -16,7 +16,7 @@
 #include <string>
 #include <cstdlib>
 
-#include "VideoRegToRos.h"
+#include "RosClient.h"
 
 using namespace ros;
 using namespace std;
@@ -24,18 +24,18 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    init(argc, argv, "VideoRegToRos");
+    init(argc, argv, "RosClient");
 
-    ROS_INFO("Starting VideoRegToRos");
+    ROS_INFO("Starting RosClient");
 
-    RosIpT::VideoRegToRos videoRegToRos;
+    RosIpT::RosClient rosClient;
     NodeHandle nh;
-    Publisher* mainsPub = videoRegToRos.getPublisher();
-    *mainsPub = nh.advertise<sensor_msgs::Image>("/test/rgb/image_rect_color", 1);
+    Publisher* mainsPub = rosClient.getPublisher();
+    *mainsPub = nh.advertise<sensor_msgs::Image>("/test/rgb/image_rect_color", 10);
     
-    videoRegToRos.connect2Server("127.0.0.1", 50000);
+    rosClient.connect2Server("127.0.0.1", 50000);
 
-    videoRegToRos.spinTcp();
+    rosClient.spinTcp();
     
 
     return EXIT_SUCCESS;

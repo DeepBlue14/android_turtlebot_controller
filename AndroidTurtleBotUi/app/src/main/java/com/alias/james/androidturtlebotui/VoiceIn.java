@@ -1,4 +1,11 @@
-//If this doesn't work, put code in MainActivity
+/*
+ * File:   VoiceIn.java
+ * Author: James Kuczynski
+ * Email: jkuczyns@cs.uml.edu
+ * File Description: This class Handles speech recognition.
+ *
+ * Last Modified 11/03/2015
+ */
 
 package com.alias.james.androidturtlebotui;
 
@@ -67,7 +74,7 @@ public class VoiceIn implements  RecognitionListener
     @Override
     public void onRmsChanged(float rmsdB)
     {
-        Log.i(LOG_TAG, "onRmsChanged: " + rmsdB);
+        //Log.i(LOG_TAG, "onRmsChanged: " + rmsdB);
     }
 
 

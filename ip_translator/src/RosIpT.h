@@ -13,12 +13,10 @@
 
 namespace RosIpT
 {
-	//class RosClient;
-	//class RosServer;
-	//class RosClientWs;
-	//class RosServerWs;
-	class VideoRosToReg;
-	class VideoRegToRos;
+	class RosClient;
+	class RosServer;
+	class RosClientWs;
+	class RosServerWs;
 }
 
 #endif /* ROS_IP_T_H */

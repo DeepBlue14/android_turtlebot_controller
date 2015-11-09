@@ -1,13 +1,13 @@
-#include "VideoRegToRos.h"
+#include "RosClient.h"
 
 
-VideoRegToRos::VideoRegToRos()
+RosClient::RosClient()
 {
     pub = new Publisher();
 }
 
 
-bool VideoRegToRos::connect2Server(string address, int port)
+bool RosClient::connect2Server(string address, int port)
 {
     serverPort = port;
     addrLen = sizeof(struct sockaddr_in);
@@ -28,16 +28,16 @@ bool VideoRegToRos::connect2Server(string address, int port)
 }
 
 
-void VideoRegToRos::spinTcp(int spinRate)
+void RosClient::spinTcp(int spinRate)
 {
-    boost::thread workerThread(&VideoRegToRos::subscribe, this, spinRate);
+    boost::thread workerThread(&RosClient::subscribe, this, spinRate);
     workerThread.join();
     
     //--------
 }
 
 
-void VideoRegToRos::subscribe(int spinRate)
+void RosClient::subscribe(int spinRate)
 {
     ros::Rate r(spinRate);
     while(ros::ok() )
@@ -71,26 +71,23 @@ void VideoRegToRos::subscribe(int spinRate)
                 img.at<Vec3b>(Point(x, y))[2] = color.val[0];
             }
         }
-        //cv::imwrite("/home/james/Documents/cv_image.jpg", img);
-        //exit(0);
         cv::imshow("Client", img);
         cv::waitKey(3);
         //-----end TESTING-----
-       
-
+        
         cv_ptr.image = img;
         pub->publish(cv_ptr.toImageMsg() );
     }
 }
 
 
-Publisher* VideoRegToRos::getPublisher()
+Publisher* RosClient::getPublisher()
 {
     return pub;
 }
 
 
-VideoRegToRos::~VideoRegToRos()
+RosClient::~RosClient()
 {
     close(sokt);
 }

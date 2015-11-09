@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ip_translator)
 
+set(Qt5_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5") #Needed for ROS only; works find without it in vanilla CMake
+set(CMAKE_AUTOMOC ON)
+set(QT_QMAKE_EXECUTABLE "/opt/Qt/5.5/gcc_64/bin/qmake")
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -17,6 +22,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
+find_package(Qt5 5.5.0 EXACT REQUIRED COMPONENTS Core WebSockets)
+add_definitions(${QT_DEFINITIONS})
+include_directories({QT_LIBRARY_DIRS})
+add_definitions(${QT_DEFINITIONS})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -126,6 +135,7 @@ include_directories(
 # add_library(ip_translator
 #   src/${PROJECT_NAME}/ip_translator.cpp
 # )
+add_library(ros_ip_transform STATIC src/RosServer.cpp src/RosClient.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -192,11 +202,69 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(VideoRosToReg src/VideoRosToRegMain.cpp
-                             src/VideoRosToReg.cpp)
-target_link_libraries(VideoRosToReg ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
-add_executable(VideoRegToRos src/VideoRegToRosMain.cpp
-                             src/VideoRegToRos.cpp)
-target_link_libraries(VideoRegToRos ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+## Add folders to be run by python nosetests
+# catkin_add_nosetests(test)
+
+
+add_executable(RosClient src/RosClient_main.cpp
+                         src/RosClient.cpp)
+target_link_libraries(RosClient ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+add_executable(RosServer src/RosServer_main.cpp
+                         src/RosServer.cpp)
+target_link_libraries(RosServer ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+
+
+add_executable(RosClientWs src/RosClientWs_main.cpp
+                         src/RosClientWs.cpp)
+target_link_libraries(RosClientWs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+qt5_use_modules(RosClientWs Core WebSockets)
+
+add_executable(RosServerWs src/RosServerWs_main.cpp
+                         src/RosServerWs.cpp)
+target_link_libraries(RosServerWs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+qt5_use_modules(RosServerWs Core WebSockets)
+
+
+
+##---------------------------------------------------------------------------------
+##For Generic CMake
+##cmake_minimum_required(VERSION 2.8.3)
+##project(TestApp)
+
+##set(CMAKE_AUTOMOC ON)
+##set(QT_QMAKE_EXECUTABLE "/opt/Qt/5.5/gcc_64/bin/qmake") # QT 5.5.0 installed @ /opt/Qt
+##set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+
+##find_package(Qt5 5.5.0 EXACT REQUIRED COMPONENTS Core WebSockets)
+##add_definitions(${QT_DEFINITIONS})
+##include_directories({QT_LIBRARY_DIRS})
+##add_definitions(${QT_DEFINITIONS})
+
+
+
+##add_executable(main main.cpp)
+##qt5_use_modules(main Core WebSockets)
+
+##----------------------------------------------------------------------------------
+##QT w/ 14.04
+##
+##find_package(Qt REQUIRED COMPONENTS QtCore QtGui QtWidgets)
+##include(${QT_USE_FILE})
+##ADD_DEFINITIONS(${QT_DEFINITIONS})
+
+##set(CMAKE_AUTOMOC ON)
+
+
+##add_executable(rqt2_image_view src/main.cpp
+##                               src/Spinner.cpp
+##                               src/MasterGui.cpp)
+##target_link_libraries(rqt2_image_view ${catkin_LIBRARIES})
+##target_link_libraries(rqt2_image_view ${QT_LIBRARIES})
+##target_link_libraries(rqt2_image_view ${OpenCV_LIBRARIES})
+
+
 

@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.speech.tts.Voice;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -32,6 +33,7 @@ public class MainActivity extends FragmentActivity implements Options
     private Login login = new Login(); /** Contains the login dialog required if a user wishes to gain administrator privileges. */
     private MenuItem speechInCb;
     private MenuItem speechOutCb;
+    private VoiceIn voicein;
 
     /**
      * Sets up the fragment manager and main layout.
@@ -46,6 +48,8 @@ public class MainActivity extends FragmentActivity implements Options
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mapFrag).commit();
         //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
+
+        voicein = new VoiceIn(this);
     }
 
 
@@ -91,7 +95,9 @@ public class MainActivity extends FragmentActivity implements Options
                 return true;
             case R.id.speech_input:
                 System.out.println("\"Speech Input\" selected");
-                speechInCb = menu.getItem(3);
+                speechInCb = menu.getItem(0);
+                // Speech recognition times out after a few seconds.
+                /*
                 if(speechInCb.isChecked())
                 {
                     speechInCb.setChecked(false);
@@ -99,7 +105,9 @@ public class MainActivity extends FragmentActivity implements Options
                 else
                 {
                     speechInCb.setChecked(true);
-                }
+                    voicein.start();
+                }*/
+                voicein.start();
                 return true;
             case R.id.speech_output:
                 System.out.println("\"Speech Output\" selected");

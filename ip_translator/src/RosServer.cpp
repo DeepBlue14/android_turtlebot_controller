@@ -1,20 +1,19 @@
-#include "VideoRosToReg.h"
+#include "RosServer.h"
 
 
-int VideoRosToReg::m_comm_fd;
+int RosServer::m_comm_fd;
 
 
-VideoRosToReg::VideoRosToReg()
+RosServer::RosServer()
 {
     m_count = 0;
     pub = new Publisher();
 }
 
 
-bool VideoRosToReg::connect2Client(int port)
+bool RosServer::connect2Client(int port)
 {
-    localSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); // TCP
-    //localSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    localSocket = socket(AF_INET, SOCK_STREAM, 0);
     if(localSocket == -1)
     {
         perror("socket() call failed!!");
@@ -48,7 +47,7 @@ bool VideoRosToReg::connect2Client(int port)
 }
 
 
-void VideoRosToReg::publishTcp(const sensor_msgs::ImageConstPtr& msg)
+void RosServer::publishTcp(const sensor_msgs::ImageConstPtr& msg)
 {
     if(m_count > 10) // Reject the first 10, since some of the first images may contain discolorations
     {
@@ -81,9 +80,6 @@ void VideoRosToReg::publishTcp(const sensor_msgs::ImageConstPtr& msg)
         if((bytes = send(remoteSocket, imgGray.data, imgSize, 0)) < 0)
         {
             cerr << "bytes = " << bytes << endl;
-            close(remoteSocket);
-            //TODO: spin until socket is available, then call: "connect2Client(m_port);"
-            
         }
     }
     else
@@ -95,13 +91,13 @@ void VideoRosToReg::publishTcp(const sensor_msgs::ImageConstPtr& msg)
 }
 
 
-Publisher* VideoRosToReg::getPublisher()
+Publisher* RosServer::getPublisher()
 {
     return pub;
 }
 
 
-VideoRosToReg::~VideoRosToReg()
+RosServer::~RosServer()
 {
     close(remoteSocket);
 }
