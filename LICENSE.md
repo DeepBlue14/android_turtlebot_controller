@@ -1,4 +1,6 @@
-cense & Other Legal Aspects
+#License & Other Legal Aspects
+
+=====
 
 **License**
 
