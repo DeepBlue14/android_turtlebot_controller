@@ -14,16 +14,27 @@
 
 package com.alias.james.androidturtlebotui;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.widget.ImageView;
+
 /**
  * Created by root on 11/6/15.
  */
 public class CamClient implements Runnable
 {
+    private Handler handler;
+    private ImageView cameraView;
+    private Bitmap bitmap;
+    private Resources res;
 
     @Override
     public void run()
     {
-        //while(true)...
+        bitmap = BitmapFactory.decodeResource(res, R.drawable.turtlebot);
+        handler.postDelayed(this, 1000);
     }
 
 
