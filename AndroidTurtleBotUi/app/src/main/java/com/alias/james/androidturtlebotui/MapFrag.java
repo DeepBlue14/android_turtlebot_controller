@@ -60,7 +60,8 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
     }
 
     private ImageView imageView; /**  */
-    private Bitmap turtlebotBitmap;
+    private static ImageView camImageView;
+    //private Bitmap turtlebotBitmap;
     private Bitmap mapBitmap; /** Map of the location */
     private Canvas mapCanvas; /** This will be loaded from the bitmap */
     private Paint paint; /**  */
@@ -106,21 +107,26 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         View view = inflater.inflate(R.layout.map_layout, container, false);
 
         Bitmap tmpBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
-        mapBitmap = tmpBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        //RGB_565 takes less space; see: http://developer.android.com/intl/ko/reference/android/graphics/Bitmap.Config.html
+        mapBitmap = tmpBitmap.copy(Bitmap.Config.RGB_565, true);
         mapWidth = mapBitmap.getWidth();
         mapHeight = mapBitmap.getHeight();
         mapCanvas = new Canvas(mapBitmap);
 
         paint = new Paint();
 
-        turtlebotBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot);
-        turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, 60, 60, true);
-        robotWidth = turtlebotBitmap.getWidth();
-        robotHeight = turtlebotBitmap.getHeight();
-        paint.setColor(Color.YELLOW);
-        mapCanvas.drawBitmap(turtlebotBitmap, 240, 360, paint);
+        //turtlebotBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot);
+        //turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, 60, 60, true);
+        //robotWidth = turtlebotBitmap.getWidth();
+        //robotHeight = turtlebotBitmap.getHeight();
+        robotWidth = 20;
+        robotHeight = 20;
+        paint.setColor(Color.GREEN);
+        //mapCanvas.drawBitmap(turtlebotBitmap, 240, 360, paint);
+        mapCanvas.drawCircle(240, 360, 20, paint);
 
         imageView = (ImageView) view.findViewById(R.id.map_image);
+        camImageView = (ImageView) view.findViewById(R.id.cam_map_image);
         //imageView.setImageBitmap(mapBitmap);
         imageView.setImageDrawable(new BitmapDrawable(getResources(), mapBitmap));
         imageView.setOnTouchListener(this);
@@ -246,12 +252,13 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
                                 (fingerPressY0 > fingerPressY1 && dy0 >= 0 && dy1 <= 0) )
                         {
                             mapCanvas.drawColor(Color.BLACK);
-                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth()+(mapBitmap.getWidth()/100), mapBitmap.getHeight()+(mapBitmap.getHeight()/100), false);
-                            turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, turtlebotBitmap.getWidth()+1, turtlebotBitmap.getHeight()+1, false);
+                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth() + (mapBitmap.getWidth() / 100), mapBitmap.getHeight() + (mapBitmap.getHeight() / 100), false);
+                            //turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, turtlebotBitmap.getWidth()+1, turtlebotBitmap.getHeight()+1, false);
                             mapWidth = mapBitmap.getWidth();
                             mapHeight = mapBitmap.getHeight();
                             mapCanvas.drawBitmap(mapBitmap, mapXPos, mapYPos, paint);
-                            mapCanvas.drawBitmap(turtlebotBitmap, robotXPos, robotYPos, paint);
+                            //mapCanvas.drawBitmap(turtlebotBitmap, robotXPos, robotYPos, paint);
+                            mapCanvas.drawCircle(robotXPos, robotYPos, 20, paint);
                             imageView.invalidate(); //tells app to redraw view; also see onDraw();
 
                         }
@@ -263,12 +270,13 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
                         {
 
                             mapCanvas.drawColor(Color.BLACK);
-                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth()-(mapBitmap.getWidth()/100), mapBitmap.getHeight()-(mapBitmap.getHeight()/100), false);
-                            turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, turtlebotBitmap.getWidth()-1, turtlebotBitmap.getHeight()-1, false);
+                            mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapBitmap.getWidth() - (mapBitmap.getWidth() / 100), mapBitmap.getHeight() - (mapBitmap.getHeight() / 100), false);
+                            //turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, turtlebotBitmap.getWidth()-1, turtlebotBitmap.getHeight()-1, false);
                             mapWidth = mapBitmap.getWidth();
                             mapHeight = mapBitmap.getHeight();
                             mapCanvas.drawBitmap(mapBitmap, mapXPos, mapYPos, paint);
-                            mapCanvas.drawBitmap(turtlebotBitmap, robotXPos, robotYPos, paint);
+                            //mapCanvas.drawBitmap(turtlebotBitmap, robotXPos, robotYPos, paint);
+                            mapCanvas.drawCircle(robotXPos, robotYPos, 20, paint);
                             imageView.invalidate(); //tells app to redraw view; also see onDraw();
                         }
                     }
@@ -307,7 +315,8 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
                         mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
                         mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapWidth, mapHeight, false);
                         mapCanvas.drawBitmap(mapBitmap, (mapXPos += dx), (mapYPos += dy), paint);
-                        mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += dx), (robotYPos += dy), paint);
+                        //mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += dx), (robotYPos += dy), paint);
+                        mapCanvas.drawCircle((robotXPos += dx), (robotYPos += dy), 20, paint);
                         for(int i = 0; i < footPrintArrLst.size(); i++)
                         {
                             mapCanvas.drawCircle(footPrintArrLst.get(i).x, footPrintArrLst.get(i).y, 5, paint);
@@ -360,20 +369,23 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         if(isRobotSelected)
         {
             //System.out.println("^^^Robot is selected!");
-            turtlebotBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot2);
+            //turtlebotBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot2);
+            paint.setColor(Color.YELLOW);
         }
         else
         {
             //System.out.println("^^^Robot is NOT selected!");
-            turtlebotBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot);
+            //turtlebotBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.turtlebot);
+            paint.setColor(Color.GREEN);
         }
 
-        turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, 60, 60, true);
+        //turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, 60, 60, true);
 
         mapCanvas.drawColor(Color.BLACK);
         mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
         mapCanvas.drawBitmap(mapBitmap, mapXPos, mapYPos, paint);
-        mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += 10), robotYPos, paint);
+        //mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += 10), robotYPos, paint);
+        mapCanvas.drawCircle((robotXPos += 10), robotYPos, 20, paint);
         for(int i = 0; i < footPrintArrLst.size(); i++)
         {
             mapCanvas.drawCircle(footPrintArrLst.get(i).x, footPrintArrLst.get(i).y, 5, paint);//offset of bitmap vs imageview
@@ -386,7 +398,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
     {
         Matrix matrix = new Matrix();
         matrix.postRotate(degrees);
-        turtlebotBitmap = Bitmap.createBitmap(turtlebotBitmap, 0, 0, turtlebotBitmap.getWidth(), turtlebotBitmap.getHeight(), matrix, true);
+        //turtlebotBitmap = Bitmap.createBitmap(turtlebotBitmap, 0, 0, turtlebotBitmap.getWidth(), turtlebotBitmap.getHeight(), matrix, true);
     }
 
 
@@ -436,170 +448,154 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
     }
 
 
-    public void setMapBitmap(Bitmap mapBitmap)
+    public static void setCamImageView(ImageView camImageView)
     {
+        MapFrag.camImageView = camImageView;
+    }
+
+
+    public static ImageView getCamImageView()
+    {
+        return camImageView;
+    }
+
+
+    public void setMapBitmap(Bitmap mapBitmap) {
         this.mapBitmap = mapBitmap;
     }
 
 
-    public Bitmap getMapBitmap()
-    {
+    public Bitmap getMapBitmap() {
         return mapBitmap;
     }
 
 
-    public void setMapCanvas(Canvas mapCanvas)
-    {
+    public void setMapCanvas(Canvas mapCanvas) {
         this.mapCanvas = mapCanvas;
     }
 
 
-    public Canvas getMapCanvas()
-    {
+    public Canvas getMapCanvas() {
         return mapCanvas;
     }
 
 
-    public void setPaint(Paint paint)
-    {
+    public void setPaint(Paint paint) {
         this.paint = paint;
     }
 
 
-    public Paint getPaint()
-    {
+    public Paint getPaint() {
         return paint;
     }
 
 
-    public void setHandler(Handler handler)
-    {
+    public void setHandler(Handler handler) {
         this.handler = handler;
     }
 
 
-    public Handler getHandler()
-    {
+    public Handler getHandler() {
         return handler;
     }
 
 
-    public void setIsRobotSelected(boolean isRobotSelected)
-    {
+    public void setIsRobotSelected(boolean isRobotSelected) {
         this.isRobotSelected = isRobotSelected;
     }
 
 
-    public boolean getIsRobotSelected()
-    {
+    public boolean getIsRobotSelected() {
         return isRobotSelected;
     }
 
 
-    public void setMapXPos(float mapXPos)
-    {
+    public void setMapXPos(float mapXPos) {
         this.mapXPos = mapXPos;
     }
 
 
-    public float getMapXPos()
-    {
+    public float getMapXPos() {
         return mapXPos;
     }
 
 
-    public void setMapYPos(float mapYPos)
-    {
+    public void setMapYPos(float mapYPos) {
         this.mapYPos = mapYPos;
     }
 
 
-    public float getMapYPos()
-    {
+    public float getMapYPos() {
         return mapYPos;
     }
 
 
-    public void setMapWidth(int mapWidth)
-    {
+    public void setMapWidth(int mapWidth) {
         this.mapWidth = mapWidth;
     }
 
 
-    public int getMapWidth()
-    {
+    public int getMapWidth() {
         return mapWidth;
     }
 
 
-    public void setMapHeight(int mapHeight)
-    {
+    public void setMapHeight(int mapHeight) {
         this.mapHeight = mapHeight;
     }
 
 
-    public int getMapHeight()
-    {
+    public int getMapHeight() {
         return mapHeight;
     }
 
 
-    public void setRobotXPos(int robotXPos)
-    {
+    public void setRobotXPos(int robotXPos) {
         this.robotXPos = robotXPos;
     }
 
 
-    public int getRobotXPos()
-    {
+    public int getRobotXPos() {
         return robotXPos;
     }
 
 
-    public void setRobotYPos(int robotYPos)
-    {
+    public void setRobotYPos(int robotYPos) {
         this.robotYPos = robotYPos;
     }
 
 
-    public int getRobotYPos()
-    {
+    public int getRobotYPos() {
         return robotYPos;
     }
 
 
-    public void setRobotWidth(int robotWidth)
-    {
+    public void setRobotWidth(int robotWidth) {
         this.robotWidth = robotWidth;
     }
 
 
-    public int getRobotWidth()
-    {
+    public int getRobotWidth() {
         return robotWidth;
     }
 
 
-    public void setRobotHeight(int robotHeight)
-    {
+    public void setRobotHeight(int robotHeight) {
         this.robotHeight = robotHeight;
     }
 
 
-    public int getRobotHeight()
-    {
+    public int getRobotHeight() {
         return robotHeight;
     }
 
 
-    public void setDisplaySize(Point displaySize)
-    {
+    public void setDisplaySize(Point displaySize) {
         this.displaySize = displaySize;
     }
 
 
-    public Point getDisplaySize()
-    {
+    public Point getDisplaySize() {
         return displaySize;
     }
 
@@ -609,8 +605,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
      *
      * @return
      */
-    public String toString()
-    {
+    public String toString() {
         return "***METHOD STUB***";
     }
 

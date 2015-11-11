@@ -11,6 +11,7 @@
         android:src="@drawable/test_world" />
 
     <ImageView
+        android:id="@+id/cam_map_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/map_image"

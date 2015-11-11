@@ -50,6 +50,18 @@ public class MainActivity extends FragmentActivity implements Options
         //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
 
         voicein = new VoiceIn(this);
+
+        //-----------------------------------------------------------------------------------------
+
+
+        //do threading stuff here
+        final CamClient otherThread = new CamClient();
+        //otherThread.setImageView(mapFrag.getImageView() );
+        Thread trueThread = new Thread(otherThread);
+        trueThread.start();
+
+
+        //-----------------------------------------------------------------------------------------
     }
 
 
@@ -186,6 +198,8 @@ public class MainActivity extends FragmentActivity implements Options
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+
 
 
     public String toString()

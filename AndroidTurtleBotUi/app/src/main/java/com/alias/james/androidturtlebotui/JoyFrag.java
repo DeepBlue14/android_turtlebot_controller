@@ -106,11 +106,11 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
         }
 
 
-        joyBitmap = tmpBitmap1.copy(Bitmap.Config.ARGB_8888, true);
+        joyBitmap = tmpBitmap1.copy(Bitmap.Config.RGB_565, true);
         joyCanvas = new Canvas(joyBitmap);
 
         Bitmap tmpBitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.compass_mini);
-        compassBitmap = tmpBitmap2.copy(Bitmap.Config.ARGB_8888, true);
+        compassBitmap = tmpBitmap2.copy(Bitmap.Config.RGB_565, true);
         //TODO: canvas for compass?
 
         joyImageView.setImageDrawable(new BitmapDrawable(getResources(), joyBitmap));
