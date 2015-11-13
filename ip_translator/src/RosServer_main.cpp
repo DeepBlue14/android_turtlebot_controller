@@ -11,6 +11,7 @@
 
 #include <ros/ros.h>
 #include <sensor_msgs/Image.h>
+#include <geometry_msgs/Point.h>
 
 #include <iostream>
 #include <string>
@@ -21,13 +22,6 @@
 using namespace ros;
 using namespace std;
 
-RosServer rosServer;
-
-void callback(const sensor_msgs::ImageConstPtr& msg)
-{
-    rosServer.publishTcp(msg);
-}
-
 
 int main(int argc, char **argv)
 {
@@ -35,16 +29,34 @@ int main(int argc, char **argv)
 
     ROS_INFO("Starting RosServer");
 
+    RosServer rosServer;
     NodeHandle nh;
-    Subscriber sub = nh.subscribe<sensor_msgs::Image>(/*"/usb_cam/image_raw"*/"/camera/rgb/image_rect_color", 10, callback);
+    Subscriber sub;
 
 
-    if(argc == 2)
+    if(argc == 3)
     {
+        cout << "HERE (1)" << endl;
+        switch(atoi(argv[2]) )
+        {
+            case 0:
+                cout << "HERE (2)" << endl;
+                sub = nh.subscribe<sensor_msgs::Image>("/camera/rgb/image_rect_color", 10, &RosServer::callback, &rosServer);
+                break;
+            case 1:
+                cout << "HERE (3)" << endl;
+                sub = nh.subscribe<geometry_msgs::Point>("/tablet/geometry_msgs/point", 10, &RosServer::callback2, &rosServer);
+                break;
+            default:
+                cout << "HERE (4)" << endl;
+                sub = nh.subscribe<sensor_msgs::Image>("/camera/rgb/image_rect_color", 10, &RosServer::callback, &rosServer);
+        }
+        
         rosServer.connect2Client(atoi(argv[1]) );
     }
     else
     {
+        sub = nh.subscribe<sensor_msgs::Image>("/camera/rgb/image_rect_color", 10, &RosServer::callback, &rosServer);
         rosServer.connect2Client(50000);
     }
 

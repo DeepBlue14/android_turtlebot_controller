@@ -89,7 +89,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
             //load part of the map where robot is at currently
             Matrix matrix = new Matrix();
             matrix.postRotate(0);
-            Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
+            Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.james_world2);
             tmpBitmap0 = Bitmap.createBitmap(tmpBitmap0, 0, 0, 480, 640, matrix, true);
             viewImageView.setImageBitmap(tmpBitmap0);
         }

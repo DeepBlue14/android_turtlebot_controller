@@ -22,6 +22,7 @@
 #include <ros/console.h>
 
 #include <sensor_msgs/Image.h>
+#include <geometry_msgs/Point.h>
 
 #include <opencv/cv.h>
 #include <image_transport/image_transport.h>
@@ -71,10 +72,12 @@ class RosIpT::RosServer
         
     public:
         RosServer();
-        //void callback(const sensor_msgs::ImageConstPtr& image);
+        void callback(const sensor_msgs::ImageConstPtr& msg);
+        void callback2(const geometry_msgs::Point msg);
         bool connect2Client(int port);
         //void connectionBrokeHandler(int port);
         void publishTcp(const sensor_msgs::ImageConstPtr& msg);
+        void publishTcp(const geometry_msgs::Point& msg);
         Publisher* getPublisher();
         ~RosServer();
 

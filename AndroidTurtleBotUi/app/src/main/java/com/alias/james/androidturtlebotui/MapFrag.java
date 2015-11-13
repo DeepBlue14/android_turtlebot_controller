@@ -106,7 +106,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         System.out.println("^^^@ MapFrag::onCreateView");
         View view = inflater.inflate(R.layout.map_layout, container, false);
 
-        Bitmap tmpBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
+        Bitmap tmpBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.james_world2);
         //RGB_565 takes less space; see: http://developer.android.com/intl/ko/reference/android/graphics/Bitmap.Config.html
         mapBitmap = tmpBitmap.copy(Bitmap.Config.RGB_565, true);
         mapWidth = mapBitmap.getWidth();
@@ -312,7 +312,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
 
                     if (dx < 100 && dy < 100 ) {
                         mapCanvas.drawColor(Color.BLACK);
-                        mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
+                        mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.james_world2);
                         mapBitmap = Bitmap.createScaledBitmap(mapBitmap, mapWidth, mapHeight, false);
                         mapCanvas.drawBitmap(mapBitmap, (mapXPos += dx), (mapYPos += dy), paint);
                         //mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += dx), (robotYPos += dy), paint);
@@ -382,7 +382,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
         //turtlebotBitmap = Bitmap.createScaledBitmap(turtlebotBitmap, 60, 60, true);
 
         mapCanvas.drawColor(Color.BLACK);
-        mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_world);
+        mapBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.james_world2);
         mapCanvas.drawBitmap(mapBitmap, mapXPos, mapYPos, paint);
         //mapCanvas.drawBitmap(turtlebotBitmap, (robotXPos += 10), robotYPos, paint);
         mapCanvas.drawCircle((robotXPos += 10), robotYPos, 20, paint);

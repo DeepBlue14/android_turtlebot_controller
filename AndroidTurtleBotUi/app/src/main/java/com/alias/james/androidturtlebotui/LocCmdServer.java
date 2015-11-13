@@ -2,11 +2,8 @@
  * File:   CamClient.java
  * Author: James Kuczynski
  * Email: jkuczyns@cs.uml.edu
- * File Description: This class contains a thread which will receive the video feed from the robot.
- *
- *
- * Reference: http://developer.android.com/intl/ko/training/multiple-threads/communicate-ui.html
- * // opencv stuff: http://stackoverflow.com/questions/17767557/how-to-use-opencv-in-android-studio-using-gradle-build-tool
+ * File Description: This class contains a thread which will send location commands to the robot
+ *                   to execute.
  *
  *
  * Last Modified 11/08/2015
@@ -15,28 +12,26 @@
 
 package com.alias.james.androidturtlebotui;
 
-import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.widget.ImageView;
 
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
 
+
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.text.BreakIterator;
 
 /**
- * Created by root on 11/9/15.
+ * Created by root on 11/12/15.
  */
-public class CamClient /*extends Activity */implements Runnable {
+public class LocCmdServer implements Runnable {
+
 
     //TODO: main() should notify this thread which fragment is loaded
     enum CurrentFrag {
@@ -45,6 +40,9 @@ public class CamClient /*extends Activity */implements Runnable {
         TELEOP
     }
 
+    private String locCmdStr = new String();
+    private char DELIMITER = '|';
+    private final int MESSAGE_SIZE = 8;
     private static CurrentFrag currentFrag;
     private int count=0;
     private ImageView imageView;
@@ -56,11 +54,8 @@ public class CamClient /*extends Activity */implements Runnable {
     private boolean isIdling = false;
     Handler handler;
 
-    public CamClient() {
 
-        if(!OpenCVLoader.initDebug() ) {
-            System.err.println("^^^Failed to load OpenCV @ FetchLRFrames::FetchLRFrames()");
-        }
+    public LocCmdServer() {
         handler = new Handler();
     }
 
@@ -72,12 +67,9 @@ public class CamClient /*extends Activity */implements Runnable {
         int currPos = 0;
         int bytesRead = 0;
         InputStream sub;
-        Mat mat = new Mat(480, 640, CvType.CV_8UC3);
 
         while (true) {
-            if(imageView == null)
-                imageView = MapFrag.getCamImageView();
-            if (!isIdling && imageView != null) {
+            if (!isIdling) {
 
                 if (!isConnected) {
                     connect();
@@ -85,35 +77,21 @@ public class CamClient /*extends Activity */implements Runnable {
 
                 try {
                     if (socket != null) {
-                        sub = socket.getInputStream();
+                        PrintWriter out = null;
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        out.println(locCmdStr);
+
+                        /*
+                        //update UI
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageBitmap(bitmap);
+                            }
+                        });
+                        */
                     } else {
                         sub = null; //FIXME: hack
-                    }
-
-                    if (sub != null) {
-
-                        currPos = 0;
-                        bytesRead = 0;
-
-                        do {
-                            bytesRead = sub.read(buffer, currPos, (buffer.length - currPos));
-                            currPos += bytesRead;
-                        } while (bytesRead != -1 && bytesRead != 0);
-
-                        mat.put(0, 0, buffer);
-
-                        if (currPos == 921600) {
-                            bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.RGB_565);
-                            Utils.matToBitmap(mat, bitmap);
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    imageView.setImageBitmap(bitmap);
-                                }
-                            });
-
-                        }
                     }
 
                 } catch (IOException e) {
@@ -132,7 +110,7 @@ public class CamClient /*extends Activity */implements Runnable {
         System.out.println("^^^@ connect()");
         try {
             serverAddress = InetAddress.getByName("10.0.4.6");
-            socket = new Socket(serverAddress, 50000 );
+            socket = new Socket(serverAddress, 50002);
             isConnected = true;
             System.out.println("^^^connected successfully!");
 
@@ -247,5 +225,4 @@ public class CamClient /*extends Activity */implements Runnable {
         super.finalize();
     }
 
-
-} // End of class OtherThread
+}

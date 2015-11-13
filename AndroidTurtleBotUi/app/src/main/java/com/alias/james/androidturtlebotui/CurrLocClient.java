@@ -2,11 +2,8 @@
  * File:   CamClient.java
  * Author: James Kuczynski
  * Email: jkuczyns@cs.uml.edu
- * File Description: This class contains a thread which will receive the video feed from the robot.
- *
- *
- * Reference: http://developer.android.com/intl/ko/training/multiple-threads/communicate-ui.html
- * // opencv stuff: http://stackoverflow.com/questions/17767557/how-to-use-opencv-in-android-studio-using-gradle-build-tool
+ * File Description: This class contains a thread which will receive updates as to the robots
+ *                   current location.
  *
  *
  * Last Modified 11/08/2015
@@ -15,28 +12,23 @@
 
 package com.alias.james.androidturtlebotui;
 
-import android.app.Activity;
-import android.content.res.Resources;
+
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.os.Handler;
 import android.widget.ImageView;
-
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.text.BreakIterator;
+
 
 /**
- * Created by root on 11/9/15.
+ * Created by root on 11/12/15.
  */
-public class CamClient /*extends Activity */implements Runnable {
+public class CurrLocClient implements Runnable {
 
     //TODO: main() should notify this thread which fragment is loaded
     enum CurrentFrag {
@@ -46,38 +38,33 @@ public class CamClient /*extends Activity */implements Runnable {
     }
 
     private static CurrentFrag currentFrag;
-    private int count=0;
+    private char DELIMITER = '|';
+    private PointF robotCurrPos = new PointF();
     private ImageView imageView;
     private Bitmap bitmap;
     private InetAddress serverAddress = null;
     private Socket socket;
-    private final int MATRIX_SIZE = 921600;
+    private final int MESSAGE_SIZE = 8;
     private boolean isConnected = false;
     private boolean isIdling = false;
     Handler handler;
 
-    public CamClient() {
+    public CurrLocClient() {
 
-        if(!OpenCVLoader.initDebug() ) {
-            System.err.println("^^^Failed to load OpenCV @ FetchLRFrames::FetchLRFrames()");
-        }
-        handler = new Handler();
     }
 
 
     @Override
     public void run() {
 
-        byte[] buffer = new byte[MATRIX_SIZE];
+        byte[] buffer = new byte[MESSAGE_SIZE];
         int currPos = 0;
         int bytesRead = 0;
         InputStream sub;
-        Mat mat = new Mat(480, 640, CvType.CV_8UC3);
+        String posAsStr;
 
         while (true) {
-            if(imageView == null)
-                imageView = MapFrag.getCamImageView();
-            if (!isIdling && imageView != null) {
+            if (!isIdling) {
 
                 if (!isConnected) {
                     connect();
@@ -100,20 +87,31 @@ public class CamClient /*extends Activity */implements Runnable {
                             currPos += bytesRead;
                         } while (bytesRead != -1 && bytesRead != 0);
 
-                        mat.put(0, 0, buffer);
+                        //convert buffer to string
+                        posAsStr = new String(buffer, "UTF-8");
 
-                        if (currPos == 921600) {
-                            bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.RGB_565);
-                            Utils.matToBitmap(mat, bitmap);
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    imageView.setImageBitmap(bitmap);
-                                }
-                            });
-
+                        //TODO: convert string to floats
+                        String tmpStr1 = new String();
+                        String tmpStr2 = new String();
+                        boolean isFirstFloat = true;
+                        for(int i = 0; i < posAsStr.length(); i++) {
+                            if(posAsStr.charAt(i) != DELIMITER && isFirstFloat) {
+                                tmpStr1 += posAsStr.charAt(i);
+                            } else {
+                                isFirstFloat = false;
+                                tmpStr2 += posAsStr.charAt(i);
+                            }
                         }
+                        robotCurrPos.x = Float.parseFloat(tmpStr1);
+                        robotCurrPos.y = Float.parseFloat(tmpStr2);
+                        System.out.println("^^^recieved location from robot: (" + robotCurrPos.x + ", " + robotCurrPos.y + ")");
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //imageView.setImageBitmap(bitmap);
+                            }
+                        });
                     }
 
                 } catch (IOException e) {
@@ -132,7 +130,7 @@ public class CamClient /*extends Activity */implements Runnable {
         System.out.println("^^^@ connect()");
         try {
             serverAddress = InetAddress.getByName("10.0.4.6");
-            socket = new Socket(serverAddress, 50000 );
+            socket = new Socket(serverAddress, 50001);
             isConnected = true;
             System.out.println("^^^connected successfully!");
 
@@ -162,16 +160,6 @@ public class CamClient /*extends Activity */implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-
-    public int getCount() {
-        return count;
     }
 
 
@@ -215,8 +203,8 @@ public class CamClient /*extends Activity */implements Runnable {
     }
 
 
-    public int getMATRIX_SIZE() {
-        return MATRIX_SIZE;
+    public int getMESSAGE_SIZE() {
+        return MESSAGE_SIZE;
     }
 
 
@@ -248,4 +236,4 @@ public class CamClient /*extends Activity */implements Runnable {
     }
 
 
-} // End of class OtherThread
+}

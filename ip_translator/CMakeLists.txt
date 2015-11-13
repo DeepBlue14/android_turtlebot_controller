@@ -207,6 +207,9 @@ add_library(ros_ip_transform STATIC src/RosServer.cpp src/RosClient.cpp)
 # catkin_add_nosetests(test)
 
 
+add_executable(Chatterbot src/Chatterbot.cpp)
+target_link_libraries(Chatterbot ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
 add_executable(RosClient src/RosClient_main.cpp
                          src/RosClient.cpp)
 target_link_libraries(RosClient ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})

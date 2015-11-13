@@ -7,8 +7,7 @@
         android:id="@+id/map_image"
         android:scaleType="center"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:src="@drawable/test_world" />
+        android:layout_height="fill_parent" />
 
     <ImageView
         android:id="@+id/cam_map_image"

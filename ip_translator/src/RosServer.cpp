@@ -11,6 +11,19 @@ RosServer::RosServer()
 }
 
 
+void RosServer::callback(const sensor_msgs::ImageConstPtr& msg)
+{
+    this->publishTcp(msg);
+}
+
+
+void RosServer::callback2(const geometry_msgs::Point msg)
+{
+    cout << "in callback2" << endl;
+    this->publishTcp(msg);
+}
+
+
 bool RosServer::connect2Client(int port)
 {
     localSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -86,6 +99,28 @@ void RosServer::publishTcp(const sensor_msgs::ImageConstPtr& msg)
     {
         m_count++;
         cout << "Skipping tcp transfer" << endl;
+    }
+
+}
+
+
+void RosServer::publishTcp(const geometry_msgs::Point& msg)
+{
+    
+    cout << "about to send" << endl;
+    string str = "HelloWorld";
+    int imgSize = str.size();
+    char* iptrTmp = (char*) str.c_str();
+    unsigned char* iptr = (unsigned char*) iptrTmp;
+    int bytes = 0;
+    
+    if((bytes = send(remoteSocket, iptr, imgSize, 0)) < 0)
+    {
+        cerr << "bytes = " << bytes << endl;
+    }
+    else
+    {
+        cout << "Sent msg" << endl;
     }
 
 }
