@@ -46,8 +46,8 @@ public class MainActivity extends FragmentActivity implements Options
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mapFrag).commit();
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mapFrag).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
 
         voicein = new VoiceIn(this);
 
@@ -60,6 +60,9 @@ public class MainActivity extends FragmentActivity implements Options
         Thread trueThread = new Thread(otherThread);
         trueThread.start();
 
+        final LocCmdServer otherThread2 = new LocCmdServer();
+        Thread trueThread2 = new Thread(otherThread2);
+        trueThread2.start();
 
         //-----------------------------------------------------------------------------------------
     }

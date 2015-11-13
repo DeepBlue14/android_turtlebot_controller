@@ -17,9 +17,15 @@ package com.alias.james.androidturtlebotui;
  */
 public final class Constants
 {
-    private static final String ROBOT_NAME = "Genevieve";
-    private static final String START = "Initiate activation sequence";
-    private static final String END = "Terminate all processes";
-    private static final String[] DIRECTIONS = {"Forward", "Rotate left", "Rotate right", "Backward", "Stop"};
-    private static final String[] E_STOP = {"Stop"};//do .contains(), not .equal()
+    public static final int DRIVE_FORWARD = 10;
+    public static final int DRIVE_BACKWORD = 11;
+    public static final int STOP = 12;
+    public static final int SPEED_UP = 13;
+    public static final int SLOW_DOWN = 14;
+    public static final int ROTATE_RIGHT = 15;
+    public static final int ROTATE_LEFT = 16;
+
+
+
+
 }

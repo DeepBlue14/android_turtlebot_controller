@@ -1,54 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/user_view"
-        android:scaleType="centerInside"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        android:background="#fff"
-        />
+<ImageView
+    android:id="@+id/joystick"
+    android:scaleType="center"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal" >
-
-        <Button
-            android:id="@+id/map_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:scaleType="centerInside"
-            android:layout_weight="1"
-            android:text="@string/map" />
-
-        <Button
-            android:id="@+id/video_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:scaleType="centerInside"
-            android:layout_weight="1"
-            android:text="@string/video" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/joystick"
-        android:src="@drawable/compass2"
-        android:scaleType="centerInside"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:background="#fff"
-       />
+<ImageView
+    android:id="@+id/user_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignRight="@+id/map_image"
+    android:src="@drawable/compass_mini" />
 
 
-</LinearLayout>
+</RelativeLayout>

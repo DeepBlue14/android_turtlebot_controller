@@ -207,8 +207,8 @@ add_library(ros_ip_transform STATIC src/RosServer.cpp src/RosClient.cpp)
 # catkin_add_nosetests(test)
 
 
-add_executable(Chatterbot src/Chatterbot.cpp)
-target_link_libraries(Chatterbot ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(Chatterbot2 src/Chatterbot2.cpp)
+target_link_libraries(Chatterbot2 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(RosClient src/RosClient_main.cpp
                          src/RosClient.cpp)
@@ -229,6 +229,24 @@ add_executable(RosServerWs src/RosServerWs_main.cpp
                          src/RosServerWs.cpp)
 target_link_libraries(RosServerWs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 qt5_use_modules(RosServerWs Core WebSockets)
+
+
+add_executable(toRosTopicFromTcp_test src/ToRosTopicFromTcp_test.cpp
+                      src/To_ros_ip.cpp)
+target_link_libraries(toRosTopicFromTcp_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+add_executable(fromRosTopicToTcp_test src/FromRosTopicToTcp_test.cpp
+                      src/From_ros_ip.cpp)
+target_link_libraries(fromRosTopicToTcp_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+add_executable(chatterbot src/Chatterbot.cpp)
+target_link_libraries(chatterbot ${catkin_LIBRARIES})
+
+
+#Frankenscooter-project specific:
+add_executable(DataCom src/scooter_specific/DataCom_main.cpp
+                       src/scooter_specific/DataCom.cpp)
+target_link_libraries(DataCom ${catkin_LIBRARIES})
 
 
 

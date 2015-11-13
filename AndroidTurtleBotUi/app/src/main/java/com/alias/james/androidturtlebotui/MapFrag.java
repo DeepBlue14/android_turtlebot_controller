@@ -448,8 +448,7 @@ public class MapFrag extends Fragment implements ImageView.OnTouchListener
     }
 
 
-    public static void setCamImageView(ImageView camImageView)
-    {
+    public static void setCamImageView(ImageView camImageView) {
         MapFrag.camImageView = camImageView;
     }
 

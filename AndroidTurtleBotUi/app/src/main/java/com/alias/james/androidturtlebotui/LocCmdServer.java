@@ -40,7 +40,7 @@ public class LocCmdServer implements Runnable {
         TELEOP
     }
 
-    private String locCmdStr = new String();
+    private static String locCmd = new String("000|000");
     private char DELIMITER = '|';
     private final int MESSAGE_SIZE = 8;
     private static CurrentFrag currentFrag;
@@ -63,10 +63,6 @@ public class LocCmdServer implements Runnable {
     @Override
     public void run() {
 
-        byte[] buffer = new byte[MATRIX_SIZE];
-        int currPos = 0;
-        int bytesRead = 0;
-        InputStream sub;
 
         while (true) {
             if (!isIdling) {
@@ -79,8 +75,9 @@ public class LocCmdServer implements Runnable {
                     if (socket != null) {
                         PrintWriter out = null;
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                        out.println(locCmdStr);
-
+                        out.println(locCmd);
+                        //System.out.println("^^^sent command code to robot");
+                        System.out.println("^^^sent msg");
                         /*
                         //update UI
                         runOnUiThread(new Runnable() {
@@ -91,7 +88,7 @@ public class LocCmdServer implements Runnable {
                         });
                         */
                     } else {
-                        sub = null; //FIXME: hack
+                        //sub = null; //FIXME: hack
                     }
 
                 } catch (IOException e) {
@@ -110,9 +107,21 @@ public class LocCmdServer implements Runnable {
         System.out.println("^^^@ connect()");
         try {
             serverAddress = InetAddress.getByName("10.0.4.6");
-            socket = new Socket(serverAddress, 50002);
+            socket = new Socket(serverAddress, 50001);
             isConnected = true;
-            System.out.println("^^^connected successfully!");
+
+            /*InputStream sub = socket.getInputStream();
+            byte[] buffer = new byte[5];
+            int currPos = 0;
+            int bytesRead = 0;
+
+            do {
+                bytesRead = sub.read(buffer, currPos, (buffer.length - currPos));
+                currPos += bytesRead;
+            } while (bytesRead != -1 && bytesRead != 0);
+
+            System.out.println("^^^connected successfully @ LocCmdServer and read: " + new String(buffer, "UTF-8") );
+            */
 
         } catch (UnknownHostException e) {
             System.out.println("^^^Ousted 0");
@@ -150,6 +159,16 @@ public class LocCmdServer implements Runnable {
 
     public int getCount() {
         return count;
+    }
+
+
+    public static void setLocCmd(String locCmd) {
+        LocCmdServer.locCmd = locCmd;
+    }
+
+
+    public static String getLocCmd() {
+        return locCmd;
     }
 
 

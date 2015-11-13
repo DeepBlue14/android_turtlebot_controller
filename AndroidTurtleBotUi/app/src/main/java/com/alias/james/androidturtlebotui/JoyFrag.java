@@ -38,7 +38,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
 {
 
     private Paint paint;
-    private ImageView viewImageView;
+    private static ImageView viewImageView;
     private ImageView joyImageView;
     private Bitmap cameraBitmap;
     private Bitmap mapBitmap;
@@ -50,7 +50,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
     private Button videoBtn;
     private boolean isDriving = false;
     private boolean dreamIsOn = true; /** Use modified DREAM version instead of static placement. */
-    private boolean camNotMap = false; /** Display video feed, rather then map view */
+    private boolean camNotMap = true; /** Display video feed, rather then map view */
     private float compassX;
     private float compassY;
 
@@ -73,8 +73,6 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
         paint = new Paint();
         viewImageView = (ImageView) view.findViewById(R.id.user_view);
         joyImageView = (ImageView) view.findViewById(R.id.joystick);
-        mapBtn = (Button) view.findViewById(R.id.map_button);
-        videoBtn = (Button) view.findViewById(R.id.video_button);
 
         if(camNotMap)
         {
@@ -144,13 +142,14 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
     @Override
     public boolean onTouch(View v, MotionEvent event)
     {
-        System.out.println("^^^JoyFrag::onTouch(...) activiated: (" + event.getX() + ", " + event.getY() + ")");
+        //System.out.println("^^^JoyFrag::onTouch(...) activiated: (" + event.getX() + ", " + event.getY() + ")");
         int action = event.getAction();
 
         switch (action & MotionEvent.ACTION_MASK)
         {
             case MotionEvent.ACTION_DOWN:
                 //System.out.println("^^^paint GREEN");
+                LocCmdServer.setLocCmd("000|000");
                 isDriving = true;
 
                 if(dreamIsOn)
@@ -177,15 +176,29 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
             case MotionEvent.ACTION_MOVE:
 
                 /*FIXME: these conditions are based on a square, but the compass is a circle*/
-                if(event.getX() > ((compassX - compassBitmap.getWidth() / 4)+75) ||
-                   event.getX() < ((compassX - compassBitmap.getWidth() / 4)-75) ||
-                   event.getY() > ((compassY - compassBitmap.getHeight() / 4)+75) ||
-                   event.getY() < ((compassY - compassBitmap.getHeight() / 4)-75))
+                if(event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) ||
+                   event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) ||
+                   event.getY() > ((compassY - compassBitmap.getHeight() / 2)+75) ||
+                   event.getY() < ((compassY - compassBitmap.getHeight() / 2)-75))
                 {
                     joyCanvas.drawColor(Color.GREEN);
                     joyImageView.setBackgroundColor(Color.GREEN);
-                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth()/2), compassY - (compassBitmap.getHeight()/2), paint);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
+                    if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
+                        event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75) ) {
+                        System.out.println("^^^ROTATE_LEFT?");
+                    } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
+                                event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
+                        System.out.println("^^^MOVE_FORWARD?");
+                        LocCmdServer.setLocCmd("123|123");
+                    } else if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
+                                event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
+                        System.out.println("^^^ROTATE_RIGHT?");
+                    } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
+                                event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75)) {
+                        System.out.println("^^^MOVE_BACKWARD?");
+                    }
                 }
                 else
                 {
@@ -227,6 +240,17 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
         tmpPoint.y = joyImageView.getHeight();
 
         return tmpPoint;
+    }
+
+
+    public static void setViewImageView(ImageView viewImageView) {
+        JoyFrag.viewImageView = viewImageView;
+    }
+
+
+    public static ImageView getViewImageView()
+    {
+        return viewImageView;
     }
 
 

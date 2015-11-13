@@ -130,7 +130,7 @@ public class CurrLocClient implements Runnable {
         System.out.println("^^^@ connect()");
         try {
             serverAddress = InetAddress.getByName("10.0.4.6");
-            socket = new Socket(serverAddress, 50001);
+            socket = new Socket(serverAddress, 50002);
             isConnected = true;
             System.out.println("^^^connected successfully!");
 

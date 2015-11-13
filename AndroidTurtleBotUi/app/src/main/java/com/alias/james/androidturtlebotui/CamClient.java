@@ -76,7 +76,10 @@ public class CamClient /*extends Activity */implements Runnable {
 
         while (true) {
             if(imageView == null)
-                imageView = MapFrag.getCamImageView();
+            {
+                //imageView = MapFrag.getCamImageView();
+                imageView = JoyFrag.getViewImageView();
+            }
             if (!isIdling && imageView != null) {
 
                 if (!isConnected) {
