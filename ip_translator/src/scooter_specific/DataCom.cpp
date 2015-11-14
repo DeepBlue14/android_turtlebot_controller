@@ -80,11 +80,20 @@ void DataCom::publishTcp(const sensor_msgs::ImageConstPtr& msg)
     
     
     
-    geometry_msgs::Point pixelPoint;
+    /*geometry_msgs::Point pixelPoint;
     pixelPoint.x = x;
     pixelPoint.y = y;
     
-    pub->publish(pixelPoint);
+    pub->publish(pixelPoint);*/
+    geometry_msgs::Twist cmd;
+    cmd.linear.x = 0.1;
+    cmd.linear.y = 0.0;
+    cmd.linear.z = 0.0;
+    cmd.angular.x = 0.0;
+    cmd.angular.y = 0.0;
+    cmd.angular.z = 0.0;
+    
+    pub->publish(cmd);
 }
 
 

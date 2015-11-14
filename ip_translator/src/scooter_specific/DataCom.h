@@ -6,6 +6,7 @@
 
 #include <sensor_msgs/Image.h>
 #include <geometry_msgs/Point.h>
+#include <geometry_msgs/Twist.h>
 
 #include <math.h>
 #include <stdlib.h>

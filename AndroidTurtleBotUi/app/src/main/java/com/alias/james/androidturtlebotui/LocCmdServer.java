@@ -107,7 +107,8 @@ public class LocCmdServer implements Runnable {
     public void connect() {
         System.out.println("^^^@ connect()");
         try {
-            serverAddress = InetAddress.getByName("10.0.4.6");
+            //serverAddress = InetAddress.getByName("10.0.4.6");
+            serverAddress = InetAddress.getByName("10.0.3.12");
             socket = new Socket(serverAddress, 50001);
             isConnected = true;
             System.out.println("^^^connected @ LocCmdServer");

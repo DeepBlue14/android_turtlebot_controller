@@ -242,6 +242,9 @@ target_link_libraries(fromRosTopicToTcp_test ${catkin_LIBRARIES} ${OpenCV_LIBRAR
 add_executable(chatterbot src/Chatterbot.cpp)
 target_link_libraries(chatterbot ${catkin_LIBRARIES})
 
+add_executable(chatterbot3 src/Chatterbot3.cpp)
+target_link_libraries(chatterbot3 ${catkin_LIBRARIES})
+
 
 #Frankenscooter-project specific:
 add_executable(DataCom src/scooter_specific/DataCom_main.cpp

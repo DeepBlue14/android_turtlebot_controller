@@ -265,7 +265,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                     tmpLocCmd = "000|000";
                 }
 
-                if(counter == 70)
+                if(counter == 50)
                 {
                     System.out.println("^^^sending msg");
                     LocCmdServer.setLocCmd(tmpLocCmd);
