@@ -53,6 +53,8 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
     private boolean camNotMap = true; /** Display video feed, rather then map view */
     private float compassX;
     private float compassY;
+    private int counter = 0; //send msg every x iterations
+    private String tmpLocCmd = new String("000|000");
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -148,7 +150,9 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
         switch (action & MotionEvent.ACTION_MASK)
         {
             case MotionEvent.ACTION_DOWN:
+                counter = 0; //reset counter
                 //System.out.println("^^^paint GREEN");
+                tmpLocCmd = "000|000";
                 LocCmdServer.setLocCmd("000|000");
                 isDriving = true;
 
@@ -174,49 +178,104 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                 joyImageView.invalidate(); //tells app to redraw view; also see onDraw();
                 break;
             case MotionEvent.ACTION_MOVE:
-
+                counter++;
                 /*FIXME: these conditions are based on a square, but the compass is a circle*/
 
-                /*if(event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) ||
-                   event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) ||
-                   event.getY() > ((compassY - compassBitmap.getHeight() / 2)+75) ||
-                   event.getY() < ((compassY - compassBitmap.getHeight() / 2)-75))*/
-                if(event.getY() - (compassY + compassBitmap.getHeight()/2) > 0)
+                /*if(event.getX() > ((compassX - compassBitmap.getWidth() / 2)) ||
+                   event.getX() < ((compassX - compassBitmap.getWidth() / 2)) ||
+                   event.getY() > ((compassY - compassBitmap.getHeight() / 2)) ||
+                   event.getY() < ((compassY - compassBitmap.getHeight() / 2)))*/
+                //System.out.println("^^^math: " + Math.abs(Math.abs(event.getY()) - Math.abs(compassY- compassBitmap.getHeight())));
+                /*if( Math.abs(Math.abs(event.getY()) - Math.abs(compassY- compassBitmap.getHeight())) < 90 )
                 {
+
                     joyCanvas.drawColor(Color.GREEN);
                     joyImageView.setBackgroundColor(Color.GREEN);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
                     if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
                         event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75) ) {
-                        System.out.println("^^^ROTATE_LEFT?");
+                        //System.out.println("^^^ROTATE_LEFT?");
                         LocCmdServer.setLocCmd("333|333");
                     } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
                                 event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
-                        System.out.println("^^^MOVE_FORWARD?");
+                        //System.out.println("^^^MOVE_FORWARD?");
                         LocCmdServer.setLocCmd("111|111");
                     } else if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
                                 event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
-                        System.out.println("^^^ROTATE_RIGHT?");
+                        //System.out.println("^^^ROTATE_RIGHT?");
                         LocCmdServer.setLocCmd("444|444");
                     } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
                                 event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75)) {
-                        System.out.println("^^^MOVE_BACKWARD?");
+                        //System.out.println("^^^MOVE_BACKWARD?");
                         LocCmdServer.setLocCmd("222|222");
                     }
+                }*/
+
+
+                //System.out.println("^^^math: " + (event.getY()-230 - (compassY-compassBitmap.getHeight()/2))
+                //                + ", " + ((compassY-compassBitmap.getHeight()/2)-event.getY()+230));
+                //System.out.println("^^^math: " + (event.getX()-130 - (compassX-compassBitmap.getWidth()/2))
+                //                + ", " + ((compassX-compassBitmap.getWidth()/2)-event.getX()+130));
+
+
+                if((event.getY()-230 - (compassY-compassBitmap.getHeight()/2)) < -75)
+                {
+                    joyCanvas.drawColor(Color.GREEN);
+                    joyImageView.setBackgroundColor(Color.GREEN);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
+                    joyImageView.invalidate();
+                    //System.out.println("^^^FOREWARD");
+                    tmpLocCmd = "111|111";
+                }
+                else if((event.getY()-230 - (compassY-compassBitmap.getHeight()/2)) > 75)
+                {
+                    joyCanvas.drawColor(Color.GREEN);
+                    joyImageView.setBackgroundColor(Color.GREEN);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
+                    joyImageView.invalidate();
+                    //System.out.println("^^^BACKARD");
+                    tmpLocCmd = "222|222";
+                }
+                else if( (event.getX()-130 - (compassX-compassBitmap.getWidth()/2)) < -75)
+                {
+                    joyCanvas.drawColor(Color.GREEN);
+                    joyImageView.setBackgroundColor(Color.GREEN);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
+                    joyImageView.invalidate();
+                    //System.out.println("^^^LEFT");
+                    tmpLocCmd = "333|333";
+                }
+                else if( (event.getX()-130 - (compassX-compassBitmap.getWidth()/2)) > 75)
+                {
+                    joyCanvas.drawColor(Color.GREEN);
+                    joyImageView.setBackgroundColor(Color.GREEN);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
+                    joyImageView.invalidate();
+                    //System.out.println("^^^RIGHT");
+                    tmpLocCmd = "444|444";
                 }
                 else
                 {
-                    LocCmdServer.setLocCmd("000|000");
                     joyCanvas.drawColor(Color.RED);
                     joyImageView.setBackgroundColor(Color.RED);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
+                    //System.out.println("^^^STOP");
+                    tmpLocCmd = "000|000";
+                }
+
+                if(counter == 70)
+                {
+                    System.out.println("^^^sending msg");
+                    LocCmdServer.setLocCmd(tmpLocCmd);
+                    counter = 0;
                 }
 
                 break;
             case MotionEvent.ACTION_UP:
                 //System.out.println("^^^paint WHITE");
+                LocCmdServer.setLocCmd("000|000"); //stop the robot
                 isDriving = false;
 
                 if(dreamIsOn)

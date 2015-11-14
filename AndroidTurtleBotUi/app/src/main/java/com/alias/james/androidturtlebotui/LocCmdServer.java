@@ -72,11 +72,12 @@ public class LocCmdServer implements Runnable {
                 }
 
                 try {
-                    if (socket != null) {
+                    if (socket != null && !locCmd.equals("000|000")) {
                         PrintWriter out = null;
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                         out.println(locCmd);
-                        ///System.out.println("^^^sent msg");
+                        System.out.println("^^^\tsent msg");
+                        locCmd = "000|000";
 
                         /*
                         //update UI
@@ -109,6 +110,7 @@ public class LocCmdServer implements Runnable {
             serverAddress = InetAddress.getByName("10.0.4.6");
             socket = new Socket(serverAddress, 50001);
             isConnected = true;
+            System.out.println("^^^connected @ LocCmdServer");
 
             /*InputStream sub = socket.getInputStream();
             byte[] buffer = new byte[5];

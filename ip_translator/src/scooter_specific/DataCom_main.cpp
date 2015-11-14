@@ -14,6 +14,7 @@ DataCom dataCom;
 
 void callback(const sensor_msgs::ImageConstPtr& msg)
 {
+    cout << "@ callback(...)" << endl;
     dataCom.publishTcp(msg);
 }
 
@@ -25,7 +26,7 @@ int main(int argc, char **argv)
     ROS_INFO("Starting DataCom (port 50001)");
 
     NodeHandle nh;
-    //Subscriber sub = nh.subscribe<sensor_msgs::Image>(/*"/usb_cam/image_raw"*/"/camera/rgb/image_rect_color", 10, callback);
+    Subscriber sub = nh.subscribe<sensor_msgs::Image>(/*"/usb_cam/image_raw"*/"/camera/rgb/image_rect_color", 10, callback);
     Publisher* mainsPub = dataCom.getPublisher();
     *mainsPub = nh.advertise<geometry_msgs::Point>("/scooter/geometry_msgs/pixel_point", 10);
 
