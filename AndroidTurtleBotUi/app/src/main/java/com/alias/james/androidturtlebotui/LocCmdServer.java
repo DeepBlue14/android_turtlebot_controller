@@ -76,8 +76,8 @@ public class LocCmdServer implements Runnable {
                         PrintWriter out = null;
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                         out.println(locCmd);
-                        //System.out.println("^^^sent command code to robot");
-                        System.out.println("^^^sent msg");
+                        ///System.out.println("^^^sent msg");
+
                         /*
                         //update UI
                         runOnUiThread(new Runnable() {

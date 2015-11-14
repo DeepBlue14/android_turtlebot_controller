@@ -78,8 +78,8 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
         {
             Matrix matrix = new Matrix();
             matrix.postRotate(0);
-            Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.cv_image);
-            tmpBitmap0 = Bitmap.createBitmap(tmpBitmap0, 0, 0, 480, 640, matrix, true);
+            Bitmap tmpBitmap0 = BitmapFactory.decodeResource(getResources(), R.drawable.compass_mini);
+            tmpBitmap0 = Bitmap.createBitmap(tmpBitmap0, 0, 0, tmpBitmap0.getWidth(), tmpBitmap0.getHeight(), matrix, true);
             viewImageView.setImageBitmap(tmpBitmap0);
         }
         else
@@ -108,7 +108,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
         joyCanvas = new Canvas(joyBitmap);
 
         Bitmap tmpBitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.compass_mini);
-        compassBitmap = tmpBitmap2.copy(Bitmap.Config.RGB_565, true);
+        compassBitmap = tmpBitmap2.copy(Bitmap.Config.ARGB_8888, true);
         //TODO: canvas for compass?
 
         joyImageView.setImageDrawable(new BitmapDrawable(getResources(), joyBitmap));
@@ -176,10 +176,12 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
             case MotionEvent.ACTION_MOVE:
 
                 /*FIXME: these conditions are based on a square, but the compass is a circle*/
-                if(event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) ||
+
+                /*if(event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) ||
                    event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) ||
                    event.getY() > ((compassY - compassBitmap.getHeight() / 2)+75) ||
-                   event.getY() < ((compassY - compassBitmap.getHeight() / 2)-75))
+                   event.getY() < ((compassY - compassBitmap.getHeight() / 2)-75))*/
+                if(event.getY() - (compassY + compassBitmap.getHeight()/2) > 0)
                 {
                     joyCanvas.drawColor(Color.GREEN);
                     joyImageView.setBackgroundColor(Color.GREEN);
@@ -188,23 +190,27 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                     if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
                         event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75) ) {
                         System.out.println("^^^ROTATE_LEFT?");
+                        LocCmdServer.setLocCmd("333|333");
                     } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
                                 event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
                         System.out.println("^^^MOVE_FORWARD?");
-                        LocCmdServer.setLocCmd("123|123");
+                        LocCmdServer.setLocCmd("111|111");
                     } else if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
                                 event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
                         System.out.println("^^^ROTATE_RIGHT?");
+                        LocCmdServer.setLocCmd("444|444");
                     } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
                                 event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75)) {
                         System.out.println("^^^MOVE_BACKWARD?");
+                        LocCmdServer.setLocCmd("222|222");
                     }
                 }
                 else
                 {
+                    LocCmdServer.setLocCmd("000|000");
                     joyCanvas.drawColor(Color.RED);
                     joyImageView.setBackgroundColor(Color.RED);
-                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth()/2), compassY - (compassBitmap.getHeight()/2), paint);
+                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
                 }
 

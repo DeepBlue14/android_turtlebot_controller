@@ -44,6 +44,14 @@ This package provides a UI to control a mobile robot with a Android tablet or sm
 
 *TBA...*
 
+**Run**
+```
+#start the robot stuff minimal.launch ...
+rosrun ip_translator RosServer      # sends camera feed from the robot's 3D camera 
+rosrun ip_translator DataCom        # recieves string data from the Android device
+#start the Android app
+
+```
 
 ###**Future Work**
 
