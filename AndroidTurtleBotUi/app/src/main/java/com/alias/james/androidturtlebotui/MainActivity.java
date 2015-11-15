@@ -55,8 +55,6 @@ public class MainActivity extends FragmentActivity implements Options
 
 
         //do threading stuff here
-
-
         final CamClient otherThread = new CamClient();
         //otherThread.setImageView(mapFrag.getImageView() );
         Thread trueThread = new Thread(otherThread);

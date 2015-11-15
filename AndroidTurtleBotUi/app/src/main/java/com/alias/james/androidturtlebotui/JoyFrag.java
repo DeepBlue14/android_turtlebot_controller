@@ -54,7 +54,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
     private float compassX;
     private float compassY;
     private int counter = 0; //send msg every x iterations
-    private String tmpLocCmd = new String("000|000");
+    private String tmpLocCmd = new String("666|666");
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -152,8 +152,8 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
             case MotionEvent.ACTION_DOWN:
                 counter = 0; //reset counter
                 //System.out.println("^^^paint GREEN");
-                tmpLocCmd = "000|000";
-                LocCmdServer.setLocCmd("000|000");
+                tmpLocCmd = "666|666";
+                LocCmdServer.setLocCmd("666|666");
                 isDriving = true;
 
                 if(dreamIsOn)
@@ -179,40 +179,8 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                 break;
             case MotionEvent.ACTION_MOVE:
                 counter++;
-                /*FIXME: these conditions are based on a square, but the compass is a circle*/
 
-                /*if(event.getX() > ((compassX - compassBitmap.getWidth() / 2)) ||
-                   event.getX() < ((compassX - compassBitmap.getWidth() / 2)) ||
-                   event.getY() > ((compassY - compassBitmap.getHeight() / 2)) ||
-                   event.getY() < ((compassY - compassBitmap.getHeight() / 2)))*/
-                //System.out.println("^^^math: " + Math.abs(Math.abs(event.getY()) - Math.abs(compassY- compassBitmap.getHeight())));
-                /*if( Math.abs(Math.abs(event.getY()) - Math.abs(compassY- compassBitmap.getHeight())) < 90 )
-                {
-
-                    joyCanvas.drawColor(Color.GREEN);
-                    joyImageView.setBackgroundColor(Color.GREEN);
-                    joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
-                    joyImageView.invalidate();
-                    if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
-                        event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75) ) {
-                        //System.out.println("^^^ROTATE_LEFT?");
-                        LocCmdServer.setLocCmd("333|333");
-                    } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
-                                event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
-                        //System.out.println("^^^MOVE_FORWARD?");
-                        LocCmdServer.setLocCmd("111|111");
-                    } else if ( event.getX() > ((compassX - compassBitmap.getWidth() / 2)+75) &&
-                                event.getY() < ((compassY - compassBitmap.getWidth() / 2)-75)) {
-                        //System.out.println("^^^ROTATE_RIGHT?");
-                        LocCmdServer.setLocCmd("444|444");
-                    } else if ( event.getX() < ((compassX - compassBitmap.getWidth() / 2)-75) &&
-                                event.getY() > ((compassY - compassBitmap.getWidth() / 2)+75)) {
-                        //System.out.println("^^^MOVE_BACKWARD?");
-                        LocCmdServer.setLocCmd("222|222");
-                    }
-                }*/
-
-
+                //printing coordinates
                 //System.out.println("^^^math: " + (event.getY()-230 - (compassY-compassBitmap.getHeight()/2))
                 //                + ", " + ((compassY-compassBitmap.getHeight()/2)-event.getY()+230));
                 //System.out.println("^^^math: " + (event.getX()-130 - (compassX-compassBitmap.getWidth()/2))
@@ -265,7 +233,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                     tmpLocCmd = "000|000";
                 }
 
-                if(counter == 50)
+                if(counter == 10)
                 {
                     System.out.println("^^^sending msg");
                     LocCmdServer.setLocCmd(tmpLocCmd);
@@ -275,7 +243,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                 break;
             case MotionEvent.ACTION_UP:
                 //System.out.println("^^^paint WHITE");
-                LocCmdServer.setLocCmd("000|000"); //stop the robot
+                LocCmdServer.setLocCmd("666|666"); //stop the robot
                 isDriving = false;
 
                 if(dreamIsOn)

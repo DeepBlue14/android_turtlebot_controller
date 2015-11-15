@@ -74,6 +74,10 @@ public class CamClient /*extends Activity */implements Runnable {
         InputStream sub;
         Mat mat = new Mat(480, 640, CvType.CV_8UC3);
 
+        while (UniversalDat.getIpAddressStr().equals("-1.-1.-1.-1") || UniversalDat.getVideoPort() == -1) {
+          ;//spin
+        }
+
         while (true) {
             if(imageView == null)
             {
@@ -135,8 +139,8 @@ public class CamClient /*extends Activity */implements Runnable {
         System.out.println("^^^@ connect()");
         try {
             //serverAddress = InetAddress.getByName("10.0.4.6");
-            serverAddress = InetAddress.getByName("10.0.3.12");
-            socket = new Socket(serverAddress, 50000 );
+            serverAddress = InetAddress.getByName(UniversalDat.getIpAddressStr() );
+            socket = new Socket(serverAddress, 50000);
             isConnected = true;
             System.out.println("^^^connected successfully!");
 
