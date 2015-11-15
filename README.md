@@ -46,10 +46,11 @@ This package provides a UI to control a mobile robot with a Android tablet or sm
 
 **Run**
 ```
-#start the robot stuff minimal.launch ...
-#start kinect
-rosrun ip_translator RosServer      # sends camera feed from the robot's 3D camera 
-rosrun ip_translator DataCom        # recieves string data from the Android device
+roslaunch turtlebot_bringup minimal.launch --screen             # starts the robot base
+roslaunch turtlebot_dashboard turtlebot_dashboard.launch        # starts a UI to display status info
+roslaunch turtlebot_bringup 3dsensor.launch                     # starts the camera
+rosrun ip_translator RosServer                                  # sends camera feed from the robot's 3D camera 
+rosrun ip_translator DataCom                                    # recieves string data from the Android device
 #start the Android app
 
 ```
