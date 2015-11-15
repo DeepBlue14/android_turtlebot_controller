@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ip_translator)
 
-set(Qt5_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5") #Needed for ROS only; works find without it in vanilla CMake
-set(CMAKE_AUTOMOC ON)
-set(QT_QMAKE_EXECUTABLE "/opt/Qt/5.5/gcc_64/bin/qmake")
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+#set(Qt5_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5") #Needed for ROS only; works find without it in vanilla CMake
+#set(CMAKE_AUTOMOC ON)
+#set(QT_QMAKE_EXECUTABLE "/opt/Qt/5.5/gcc_64/bin/qmake")
+#set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -22,10 +22,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-find_package(Qt5 5.5.0 EXACT REQUIRED COMPONENTS Core WebSockets)
-add_definitions(${QT_DEFINITIONS})
-include_directories({QT_LIBRARY_DIRS})
-add_definitions(${QT_DEFINITIONS})
+#find_package(Qt5 5.5.0 EXACT REQUIRED COMPONENTS Core WebSockets)
+#add_definitions(${QT_DEFINITIONS})
+#include_directories({QT_LIBRARY_DIRS})
+#add_definitions(${QT_DEFINITIONS})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -135,7 +135,7 @@ include_directories(
 # add_library(ip_translator
 #   src/${PROJECT_NAME}/ip_translator.cpp
 # )
-add_library(ros_ip_transform STATIC src/RosServer.cpp src/RosClient.cpp)
+#add_library(ros_ip_transform STATIC src/RosServer.cpp src/RosClient.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -207,8 +207,8 @@ add_library(ros_ip_transform STATIC src/RosServer.cpp src/RosClient.cpp)
 # catkin_add_nosetests(test)
 
 
-add_executable(Chatterbot2 src/Chatterbot2.cpp)
-target_link_libraries(Chatterbot2 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#add_executable(Chatterbot2 src/Chatterbot2.cpp)
+#target_link_libraries(Chatterbot2 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(RosClient src/RosClient_main.cpp
                          src/RosClient.cpp)
@@ -220,30 +220,30 @@ target_link_libraries(RosServer ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 
-add_executable(RosClientWs src/RosClientWs_main.cpp
-                         src/RosClientWs.cpp)
-target_link_libraries(RosClientWs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-qt5_use_modules(RosClientWs Core WebSockets)
+#add_executable(RosClientWs src/RosClientWs_main.cpp
+#                         src/RosClientWs.cpp)
+#target_link_libraries(RosClientWs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#qt5_use_modules(RosClientWs Core WebSockets)
 
-add_executable(RosServerWs src/RosServerWs_main.cpp
-                         src/RosServerWs.cpp)
-target_link_libraries(RosServerWs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-qt5_use_modules(RosServerWs Core WebSockets)
+#add_executable(RosServerWs src/RosServerWs_main.cpp
+#                         src/RosServerWs.cpp)
+#target_link_libraries(RosServerWs ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#qt5_use_modules(RosServerWs Core WebSockets)
 
 
-add_executable(toRosTopicFromTcp_test src/ToRosTopicFromTcp_test.cpp
-                      src/To_ros_ip.cpp)
-target_link_libraries(toRosTopicFromTcp_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#add_executable(toRosTopicFromTcp_test src/ToRosTopicFromTcp_test.cpp
+#                      src/To_ros_ip.cpp)
+#target_link_libraries(toRosTopicFromTcp_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
-add_executable(fromRosTopicToTcp_test src/FromRosTopicToTcp_test.cpp
-                      src/From_ros_ip.cpp)
-target_link_libraries(fromRosTopicToTcp_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#add_executable(fromRosTopicToTcp_test src/FromRosTopicToTcp_test.cpp
+#                      src/From_ros_ip.cpp)
+#target_link_libraries(fromRosTopicToTcp_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
-add_executable(chatterbot src/Chatterbot.cpp)
-target_link_libraries(chatterbot ${catkin_LIBRARIES})
+#add_executable(chatterbot src/Chatterbot.cpp)
+#target_link_libraries(chatterbot ${catkin_LIBRARIES})
 
-add_executable(chatterbot3 src/Chatterbot3.cpp)
-target_link_libraries(chatterbot3 ${catkin_LIBRARIES})
+#add_executable(chatterbot3 src/Chatterbot3.cpp)
+#target_link_libraries(chatterbot3 ${catkin_LIBRARIES})
 
 
 #Frankenscooter-project specific:
