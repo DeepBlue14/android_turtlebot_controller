@@ -40,7 +40,8 @@ public class LocCmdServer implements Runnable {
         TELEOP
     }
 
-    private static String locCmd = new String("000|000");
+    private static String locCmd = new String("666|666");
+    public static boolean isAudioMode = false;
     private char DELIMITER = '|';
     private final int MESSAGE_SIZE = 8;
     private static CurrentFrag currentFrag;
@@ -63,6 +64,10 @@ public class LocCmdServer implements Runnable {
     @Override
     public void run() {
 
+        while (UniversalDat.getIpAddressStr().equals("-1.-1.-1.-1") || UniversalDat.getPositionOutPort() == -1) {
+            ;//spin
+            //System.out.println("^^^\tpending msg: " + locCmd);
+        }
 
         while (true) {
             if (!isIdling) {
@@ -75,9 +80,25 @@ public class LocCmdServer implements Runnable {
                     if (socket != null && !locCmd.equals("666|666")) {
                         PrintWriter out = null;
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                        out.println(locCmd);
-                        System.out.println("^^^\tsent msg");
-                        locCmd = "666|666";
+                        if(count == 10) {
+                            out.println(locCmd);
+                            count = 0;
+                        }
+                        count++;
+                        //System.out.println("^^^\tsent msg: " + locCmd);
+
+
+                        if (locCmd.equals("000|000")) {
+                            locCmd = "666|666";
+                        }
+                        /*
+                            When in audio mode, it will continuously publish the previous command
+                            until in recieves a new command.
+                            If in joy mode, it will publish "666|666", which is not a valid sequence
+                            (i.e. the robot will do nothing).
+                         */
+                        //if (!isAudioMode)
+                        //    locCmd = "666|666";
 
                         /*
                         //update UI
@@ -109,7 +130,7 @@ public class LocCmdServer implements Runnable {
         try {
             //serverAddress = InetAddress.getByName("10.0.4.6");
             serverAddress = InetAddress.getByName(UniversalDat.getIpAddressStr() );
-            socket = new Socket(serverAddress, 50001);
+            socket = new Socket(serverAddress, UniversalDat.getPositionOutPort());
             isConnected = true;
             System.out.println("^^^connected @ LocCmdServer");
 

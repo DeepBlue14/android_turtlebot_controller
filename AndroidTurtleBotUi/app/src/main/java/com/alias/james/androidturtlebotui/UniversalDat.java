@@ -25,10 +25,10 @@ public class UniversalDat
     private static String ipAddressStr = "-1.-1.-1.-1";
     //private static int videoPort = 50000; /** The port for streaming the video. */
     private static int videoPort = -1; /** The port for streaming the video. */
-    private static int positionOutPort = 50001; /** The port which DataCom will use to send
-                                                    coordinates to the robot. */
-    private static int positionInPort = 50002; /** The position DataCom will use to receive
-                                                   current coordinates from the robot. */
+    private static int positionOutPort = -1; /** The port which DataCom will use to send
+                                                    coordinates to the robot. old default: 50001*/
+    private static int positionInPort = -1; /** The position DataCom will use to receive
+                                                   current coordinates from the robot. Old: 50002*/
 
 
 

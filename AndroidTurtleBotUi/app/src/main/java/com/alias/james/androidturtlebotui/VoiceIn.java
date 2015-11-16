@@ -108,10 +108,33 @@ public class VoiceIn implements  RecognitionListener
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = "";
         // Add all possible matches by confidence level (from most confident to least confident)
-        for (String result : matches)
+        for (String result : matches) {
+            if (result.equals("forward"))
+            {
+                LocCmdServer.isAudioMode = true;
+                LocCmdServer.setLocCmd("111|111");
+            } else if(result.equals("backward")) {
+                LocCmdServer.isAudioMode = true;
+                LocCmdServer.setLocCmd("222|222");
+            } else if (result.equals("stop")) {
+                LocCmdServer.isAudioMode = true;
+                LocCmdServer.setLocCmd("000|000");
+            } else if (result.equals("rotate left")) {
+                LocCmdServer.isAudioMode = true;
+                LocCmdServer.setLocCmd("333|333");
+            } else if (result.equals("rotate right")) {
+                LocCmdServer.isAudioMode = true;
+                LocCmdServer.setLocCmd("444|444");
+            }
             text += result + "\n";
+        }
 
         System.out.println("^^^I Heard: " + text);
+
+        /*
+
+            send drive instruction
+         */
     }
 
 

@@ -45,8 +45,12 @@ This package provides a UI to control a mobile robot with a Android tablet or sm
 *TBA...*
 
 **Run**
+- Power on the Create
+- Plug in both the kinect and Create USBs.
 ```
-roslaunch turtlebot_bringup minimal.launch --screen             # starts the robot base
+roslaunch turtlebot_bringup minimal.launch --screen             # starts the robot base.  If it fails, make sure that the Create is on,
+                                                                # and that the robot-brain is connected to the internet.  You may have
+                                                                # to unplug and re-plug in the Create.
 roslaunch turtlebot_dashboard turtlebot_dashboard.launch        # starts a UI to display status info
 roslaunch turtlebot_bringup 3dsensor.launch                     # starts the camera
 rosrun ip_translator RosServer                                  # sends camera feed from the robot's 3D camera 

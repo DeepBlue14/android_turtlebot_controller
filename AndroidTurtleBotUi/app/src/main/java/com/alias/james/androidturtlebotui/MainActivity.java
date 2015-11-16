@@ -26,14 +26,14 @@ import android.widget.Toolbar;
 public class MainActivity extends FragmentActivity implements Options
 {
 
-    private MapFrag mapFrag = new MapFrag();
+    //private MapFrag mapFrag = new MapFrag();
     private JoyFrag joyFrag = new JoyFrag();
     private Menu menu;
     private NetworkConfig networkConfig = new NetworkConfig(); /** Is a reference to the class which handles the administrator networking options. */
     private Login login = new Login(); /** Contains the login dialog required if a user wishes to gain administrator privileges. */
     private MenuItem speechInCb;
-    private MenuItem speechOutCb;
-    private VoiceIn voicein;
+    //private MenuItem speechOutCb;
+    //private VoiceIn voicein;
 
     /**
      * Sets up the fragment manager and main layout.
@@ -49,11 +49,11 @@ public class MainActivity extends FragmentActivity implements Options
         //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mapFrag).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, joyFrag).commit();
 
-        voicein = new VoiceIn(this);
+        //voicein = new VoiceIn(this);
 
         //-----------------------------------------------------------------------------------------
 
-
+        /*
         //do threading stuff here
         final CamClient otherThread = new CamClient();
         //otherThread.setImageView(mapFrag.getImageView() );
@@ -63,7 +63,7 @@ public class MainActivity extends FragmentActivity implements Options
         final LocCmdServer otherThread2 = new LocCmdServer();
         Thread trueThread2 = new Thread(otherThread2);
         trueThread2.start();
-
+        */
 
         //-----------------------------------------------------------------------------------------
     }
@@ -123,11 +123,11 @@ public class MainActivity extends FragmentActivity implements Options
                     speechInCb.setChecked(true);
                     voicein.start();
                 }*/
-                voicein.start();
+                //voicein.start();
                 return true;
             case R.id.speech_output:
                 System.out.println("\"Speech Output\" selected");
-                speechOutCb = menu.getItem(4);
+                /*speechOutCb = menu.getItem(4);
                 if(speechOutCb.isChecked())
                 {
                     speechOutCb.setChecked(false);
@@ -135,7 +135,7 @@ public class MainActivity extends FragmentActivity implements Options
                 else
                 {
                     speechOutCb.setChecked(true);
-                }
+                }*/
                 return true;
             case R.id.network:
                 System.out.println("\"Network\" selected");
