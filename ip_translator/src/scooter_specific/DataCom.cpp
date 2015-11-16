@@ -1,5 +1,5 @@
 #include "DataCom.h"
-
+//works
 
 int DataCom::m_comm_fd;
 
@@ -8,6 +8,7 @@ DataCom::DataCom()
 {
     m_count = 0;
     pub = new Publisher();
+    
 }
 
 
@@ -86,14 +87,74 @@ void DataCom::publishTcp(const sensor_msgs::ImageConstPtr& msg)
     
     pub->publish(pixelPoint);*/
     geometry_msgs::Twist cmd;
-    cmd.linear.x = 0.1;
-    cmd.linear.y = 0.0;
-    cmd.linear.z = 0.0;
-    cmd.angular.x = 0.0;
-    cmd.angular.y = 0.0;
-    cmd.angular.z = 0.0;
+    if(x == 111)
+    {
+        //forward
+        cmd.linear.x = 0.1;
+        cmd.linear.y = 0.0;
+        cmd.linear.z = 0.0;
+        cmd.angular.x = 0.0;
+        cmd.angular.y = 0.0;
+        cmd.angular.z = 0.0;
+    }
+    else if(x == 112)
+    {
+        //forward
+        cmd.linear.x = 0.2;
+        cmd.linear.y = 0.0;
+        cmd.linear.z = 0.0;
+        cmd.angular.x = 0.0;
+        cmd.angular.y = 0.0;
+        cmd.angular.z = 0.0;
+    }
+    else if(x == 221)
+    {
+        //backward
+        cmd.linear.x = -0.1;
+        cmd.linear.y = 0.0;
+        cmd.linear.z = 0.0;
+        cmd.angular.x = 0.0;
+        cmd.angular.y = 0.0;
+        cmd.angular.z = 0.0;
+    }
+    else if(x == 222)
+    {
+        //backward
+        cmd.linear.x = -0.2;
+        cmd.linear.y = 0.0;
+        cmd.linear.z = 0.0;
+        cmd.angular.x = 0.0;
+        cmd.angular.y = 0.0;
+        cmd.angular.z = 0.0;
+    }
+    else if(x == 333)
+    {   //rotate left
+        cmd.linear.x = 0.0;
+        cmd.linear.y = 0.0;
+        cmd.linear.z = 0.0;
+        cmd.angular.x = 0.0;
+        cmd.angular.y = 0.0;
+        cmd.angular.z = 0.5;
+    }
+    else if(x == 444)
+    {
+        //rotate right
+        cmd.linear.x = 0.0;
+        cmd.linear.y = 0.0;
+        cmd.linear.z = 0.0;
+        cmd.angular.x = 0.0;
+        cmd.angular.y = 0.0;
+        cmd.angular.z = -0.5;
+    }
+    else if(y == 000)
+    {
+        //sc->say("Hello, my  name is Blue.  My I P address is ten, zero, three, sixteen.  Not really, I'm lying.");
+    }
     
-    pub->publish(cmd);
+    
+    
+    if(x == 000 || x == 111 || x == 112 || x == 221 || x == 222 || x == 333 || x == 444)
+        pub->publish(cmd);
 }
 
 
