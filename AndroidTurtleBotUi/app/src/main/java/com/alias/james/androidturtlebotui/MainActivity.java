@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity implements Options
 
         //-----------------------------------------------------------------------------------------
 
-        /*
+
         //do threading stuff here
         final CamClient otherThread = new CamClient();
         //otherThread.setImageView(mapFrag.getImageView() );
@@ -63,7 +63,7 @@ public class MainActivity extends FragmentActivity implements Options
         final LocCmdServer otherThread2 = new LocCmdServer();
         Thread trueThread2 = new Thread(otherThread2);
         trueThread2.start();
-        */
+
 
         //-----------------------------------------------------------------------------------------
     }

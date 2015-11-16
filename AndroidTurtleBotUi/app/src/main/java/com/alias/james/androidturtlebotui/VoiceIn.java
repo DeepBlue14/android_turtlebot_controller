@@ -109,13 +109,12 @@ public class VoiceIn implements  RecognitionListener
         String text = "";
         // Add all possible matches by confidence level (from most confident to least confident)
         for (String result : matches) {
-            if (result.equals("forward"))
-            {
+            if (result.equals("forward")) {
                 LocCmdServer.isAudioMode = true;
                 LocCmdServer.setLocCmd("111|111");
             } else if(result.equals("backward")) {
                 LocCmdServer.isAudioMode = true;
-                LocCmdServer.setLocCmd("222|222");
+                LocCmdServer.setLocCmd("221|221");
             } else if (result.equals("stop")) {
                 LocCmdServer.isAudioMode = true;
                 LocCmdServer.setLocCmd("000|000");
