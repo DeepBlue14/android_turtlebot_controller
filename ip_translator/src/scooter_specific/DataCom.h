@@ -8,6 +8,8 @@
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Twist.h>
 
+#include <sound_play/sound_play.h>
+
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -43,7 +45,10 @@ class DataCom
         int addrLen;
         Publisher* pub;
         
+        
     public:
+        sound_play::SoundClient* sc;
+    
         DataCom();
         //void callback(const sensor_msgs::ImageConstPtr& image);
         bool connect2Client(int port);

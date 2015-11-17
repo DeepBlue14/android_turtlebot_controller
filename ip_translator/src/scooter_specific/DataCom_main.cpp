@@ -27,11 +27,11 @@ int main(int argc, char **argv)
     ROS_INFO("Starting DataCom (port 50001)");
 
     NodeHandle nh;
-    Subscriber sub = nh.subscribe<sensor_msgs::Image>(/*"/usb_cam/image_raw"*/"/camera/rgb/image_rect_color", 10, callback);
+    Subscriber sub = nh.subscribe<sensor_msgs::Image>(/*"/usb_cam/image_raw"*/"/camera/rgb/image_rect_color", 1, callback);
     Publisher* mainsPub = dataCom.getPublisher();
     //*mainsPub = nh.advertise<geometry_msgs::Point>("/scooter/geometry_msgs/pixel_point", 10);
-    *mainsPub = nh.advertise<geometry_msgs::Twist>("cmd_vel_mux/input/navi", 10);
-
+    *mainsPub = nh.advertise<geometry_msgs::Twist>("cmd_vel_mux/input/navi", 1);
+    dataCom.sc = new sound_play::SoundClient();
     dataCom.connect2Client(50001);
     ros::spin();
 
