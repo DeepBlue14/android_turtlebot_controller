@@ -184,9 +184,9 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                 counter++;
 
                 // Printing coordinates
-                // Y
-                System.out.println("^^^mathY: " + (event.getY()-230 - (compassY-compassBitmap.getHeight()/2))
-                                + ", " + ((compassY-compassBitmap.getHeight()/2)-event.getY()+230));
+                // Y //old: 230
+                System.out.println("^^^mathY: " + (event.getY()-380 - (compassY-compassBitmap.getHeight()/2))
+                                + ", " + ((compassY-compassBitmap.getHeight()/2)-event.getY()+380));
                 // X
                 System.out.println("^^^mathX: " + (event.getX()-130 - (compassX-compassBitmap.getWidth()/2))
                                 + ", " + ((compassX-compassBitmap.getWidth()/2)-event.getX()+130));
@@ -198,40 +198,40 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                 }
 
 
-                if((event.getY()-230 - (compassY-compassBitmap.getHeight()/2)) < -175)
+                if((event.getY()-380 - (compassY-compassBitmap.getHeight()/2)) < -175)
                 {
                     joyCanvas.drawColor(Color.GREEN);
                     joyImageView.setBackgroundColor(Color.GREEN);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
-                    //System.out.println("^^^FOREWARD");
+                    System.out.println("^^^FOREWARD");
                     tmpLocCmd = "112|112";
                 }
-                else if((event.getY()-230 - (compassY-compassBitmap.getHeight()/2)) < -75)
+                else if((event.getY()-380 - (compassY-compassBitmap.getHeight()/2)) < -75)
                 {
                     joyCanvas.drawColor(Color.GREEN);
                     joyImageView.setBackgroundColor(Color.GREEN);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
-                    //System.out.println("^^^FOREWARD");
+                    System.out.println("^^^FOREWARD");
                     tmpLocCmd = "111|111";
                 }
-                else if((event.getY()-230 - (compassY-compassBitmap.getHeight()/2)) > 175)
+                else if((event.getY()-380 - (compassY-compassBitmap.getHeight()/2)) > 175)
                 {
                     joyCanvas.drawColor(Color.GREEN);
                     joyImageView.setBackgroundColor(Color.GREEN);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
-                    //System.out.println("^^^BACKARD");
+                    System.out.println("^^^BACKARD");
                     tmpLocCmd = "222|222";
                 }
-                else if((event.getY()-230 - (compassY-compassBitmap.getHeight()/2)) > 75)
+                else if((event.getY()-380 - (compassY-compassBitmap.getHeight()/2)) > 75)
                 {
                     joyCanvas.drawColor(Color.GREEN);
                     joyImageView.setBackgroundColor(Color.GREEN);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
-                    //System.out.println("^^^BACKARD");
+                    System.out.println("^^^BACKARD");
                     tmpLocCmd = "221|221";
                 }
                 else if( (event.getX()-130 - (compassX-compassBitmap.getWidth()/2)) < -75)
@@ -240,7 +240,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                     joyImageView.setBackgroundColor(Color.GREEN);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
-                    //System.out.println("^^^LEFT");
+                    System.out.println("^^^LEFT");
                     tmpLocCmd = "333|333";
                 }
                 else if( (event.getX()-130 - (compassX-compassBitmap.getWidth()/2)) > 75)
@@ -249,7 +249,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                     joyImageView.setBackgroundColor(Color.GREEN);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
-                    //System.out.println("^^^RIGHT");
+                    System.out.println("^^^RIGHT");
                     tmpLocCmd = "444|444";
                 }
                 else
@@ -258,7 +258,7 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
                     joyImageView.setBackgroundColor(Color.RED);
                     joyCanvas.drawBitmap(compassBitmap, compassX - (compassBitmap.getWidth() / 2), compassY - (compassBitmap.getHeight() / 2), paint);
                     joyImageView.invalidate();
-                    //System.out.println("^^^STOP");
+                    System.out.println("^^^STOP");
                     tmpLocCmd = "000|000";
                 }
 
