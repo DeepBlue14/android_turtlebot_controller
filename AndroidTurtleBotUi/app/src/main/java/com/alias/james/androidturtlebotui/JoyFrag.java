@@ -56,6 +56,8 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
     private int counter = 0; //send msg every x iterations
     private String tmpLocCmd = new String("666|666");
     private VoiceIn voiceIn;
+    private static final int TABLET_X_OFFSET = 130;
+    private static final int TABLET_Y_OFFSET = 380;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -313,6 +315,18 @@ public class JoyFrag extends Fragment implements ImageView.OnTouchListener
     public static ImageView getViewImageView()
     {
         return viewImageView;
+    }
+
+
+    public static int getTABLET_X_OFFSET()
+    {
+        return JoyFrag.TABLET_X_OFFSET;
+    }
+
+
+    public static int getTABLET_Y_OFFSET()
+    {
+        return JoyFrag.TABLET_Y_OFFSET;
     }
 
 
