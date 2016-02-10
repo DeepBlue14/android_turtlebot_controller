@@ -154,7 +154,10 @@ void DataCom::publishTcp(const sensor_msgs::ImageConstPtr& msg)
     
     
     if(x == 000 || x == 111 || x == 112 || x == 221 || x == 222 || x == 333 || x == 444)
+    {
         pub->publish(cmd);
+        //cout << "dist: " << 
+    }
 }
 
 
