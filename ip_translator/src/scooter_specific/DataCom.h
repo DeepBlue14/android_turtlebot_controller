@@ -4,9 +4,12 @@
 #include <ros/ros.h>
 #include <ros/console.h>
 
+#include <std_msgs/Int32.h>
+#include <std_msgs/String.h>
 #include <sensor_msgs/Image.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Twist.h>
+#include <tf/transform_listener.h>
 
 #include <sound_play/sound_play.h>
 
@@ -44,9 +47,11 @@ class DataCom
                            remoteAddr;
         int addrLen;
         Publisher* pub;
+        Publisher* updatePub;
         
         
     public:
+        int globalCounter;
         sound_play::SoundClient* sc;
     
         DataCom();
@@ -55,6 +60,7 @@ class DataCom
         //void connectionBrokeHandler(int port);
         void publishTcp(const sensor_msgs::ImageConstPtr& msg);
         Publisher* getPublisher();
+        Publisher* getUpdatePublisher();
         ~DataCom();
 
 };

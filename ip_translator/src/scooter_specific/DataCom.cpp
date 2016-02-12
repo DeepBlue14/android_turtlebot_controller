@@ -6,8 +6,10 @@ int DataCom::m_comm_fd;
 
 DataCom::DataCom()
 {
+    globalCounter = 0;
     m_count = 0;
     pub = new Publisher();
+    updatePub = new Publisher();
     
 }
 
@@ -157,6 +159,14 @@ void DataCom::publishTcp(const sensor_msgs::ImageConstPtr& msg)
     {
         pub->publish(cmd);
         //cout << "dist: " << 
+        globalCounter++;
+        if(globalCounter > 25)
+        {
+            std_msgs::String myInt;
+            myInt.data = "1.68943";
+            updatePub->publish(myInt);
+            globalCounter = 0;
+        }
     }
 }
 
@@ -164,6 +174,12 @@ void DataCom::publishTcp(const sensor_msgs::ImageConstPtr& msg)
 Publisher* DataCom::getPublisher()
 {
     return pub;
+}
+
+
+Publisher* DataCom::getUpdatePublisher()
+{
+    return updatePub;
 }
 
 
